@@ -96,7 +96,7 @@ class Correspondence(models.Model):
     description = models.CharField(max_length=1000)
     date_creation = models.DateTimeField(auto_now_add=True)
 
-class History_Tt(models.Model):
+class HistoryTicket(models.Model):
     description = models.CharField(max_length=255)
     date_creation = models.DateTimeField(auto_now_add=True)
 
@@ -112,9 +112,9 @@ class Ticket(models.Model):
     correspondence = models.ManyToManyField(Correspondence)  # ''?
     department_assignment = models.OneToOneField(Department, on_delete=models.CASCADE)
     problem_problem_category = models.OneToOneField(DepartmentProblem, on_delete=models.CASCADE)
-    requestor_user = models.ForeignKey(AbstractUser, on_delete=models.CASCADE)  # CZY MOZE USER? #cały dział czy osoby lub osoba
+    user_requestor = models.ForeignKey(AbstractUser, on_delete=models.CASCADE)  # CZY MOZE USER? #cały dział czy osoby lub osoba
     file_path = models.FilePathField()
-    history_tt = models.ManyToManyField()  # osobna tabela do tego? ma zbierac zmiany w tt typu status, korespondencja, categoria przez kogo zostala utworzona zmiana
+    history_tt = models.ManyToManyField(HistoryTicket, on_delete=models.CASCADE)  # osobna tabela do tego? ma zbierac zmiany w tt typu status, korespondencja, categoria przez kogo zostala utworzona zmiana
 
 
 

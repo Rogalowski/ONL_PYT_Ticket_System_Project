@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+            {% block content %}
+
+<b><a href="{{request.META.HTTP_REFERER}}">Go back</a> </b>
+
+ <ul>
+   <h3> <li>  ID:{{ ticket.id }}  </li>
+    <li>       Status: {{ ticket.status }}  </li> </h3>
+     <li>     Title: {{ ticket.title }} </li>
+     <li> Content: {{ ticket.description }} </li>
+ <li>  Department assign: {{ ticket.department_assignment }} </li>
+        <li>         Requestor: {{ ticket.user_requestor }}</li>
+         <li>        User assigned:
+{# iterate for all users assignments and it list all assignments   #}
+     {% for assignment in ticket.user_assignment.all %}
+                   <b>     {{ assignment }}</b>
+
+{% endfor %} </li>
+
+<h4> <li>  Date Creation: {{ ticket.date_creation }} </li>
+ <li>   Date Update: {{ ticket.date_update }} </li>
+ <li>  Date Resolve: {{ ticket.date_resolve }}</li> </h4>
+
+<h2>  <a href="{% url 'ticket_edit' ticket.id %} " > EDIT TICKET </a> </h2>
+<h2>  <a href="{% url 'ticket_edit' ticket.id %} " > ADD CORESPONDENCE</a> </h2>
+
+ <h3>CORESPONDENCE: TO DO</h3>
+
+</ul>
+
+
+ {% endblock content %}

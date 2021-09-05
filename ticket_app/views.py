@@ -1,7 +1,10 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 
 # Create your views here.
+from django.urls import reverse
 from django.views import View
+from django.views.generic import UpdateView
+
 from .models import Ticket, User
 from ticket_app.forms import TicketForm
 
@@ -38,6 +41,7 @@ class TicketList(View):
 class TicketCreate(View):
     def get(self, request):
 
+        # Manual ticket creation
         # ticket_create = Ticket.objects.create(
         #     # ticket = Ticket(
         #     title='title2',
@@ -48,11 +52,7 @@ class TicketCreate(View):
         #     problem_category_id=11,
         #     user_requestor_id=1,
         # )
-
-        # ticket_create.user_assignment.add(3) # dodaje do pola many to many
-
-        print("ZAPISANO DO BAZY")
-
+        # ticket_create.user_assignment.add(3) # dodaje do pola many to many gfg
 
         context = {
             'form': TicketForm(),
@@ -121,3 +121,45 @@ class TicketCreate(View):
         # return redirect('home_index')
             # return render(request, 'ticket_app/home_view.html', context)
             # return redirect('tickets', ticket_id=Ticket.objects.all().get(id=ticket_id)
+
+
+class TicketView(View):
+    def get(self, request, *args, **kwargs):
+        ticket = Ticket.objects.get(id=kwargs['ticket_id'])
+        context = {
+                    'ticket': ticket,
+                }
+        return render(request, 'ticket_app/ticket_view.html', context)
+
+
+
+# class TicketEditView(UpdateView):
+#     def get(self, request, *args, **kwargs):
+#         ticket = Ticket.objects.get(id=kwargs['ticket_id'])
+#         context = {
+#             'form': TicketForm(),
+#             'ticket': ticket,
+#         }
+#         return render(request, 'ticket_app/ticket_create_view.html', context)
+class TicketEditView(UpdateView):
+    template_name = 'ticket_app/ticket_create_view.html'
+    # form_class = ProductForm
+
+    fields = [
+        'title',
+        'description',
+        'status',
+        'priorytet',
+        'department_assignment',
+        'problem_category',
+        'user_requestor',
+        'user_assignment',
+    ]  # wybrane pola
+    model = Ticket
+
+    def get_object(self, queryset=None):  # pobranie url_id z urls.py na zmineinaym modelu Notice w ID
+        id_ = self.kwargs.get("ticket_id")
+        return get_object_or_404(Ticket, id=id_)
+
+    def get_success_url(self):
+        return reverse('ticket_list') # , kwargs=['ticket_id']

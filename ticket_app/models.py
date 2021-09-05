@@ -117,7 +117,7 @@ class Ticket(models.Model):
     priorytet = models.CharField(choices=PRIORITY, max_length=64, default=1)
     date_creation = models.DateTimeField(auto_now_add=True)
     date_update = models.DateTimeField(auto_now=True)
-    date_resolve = models.DateTimeField(auto_now_add=True) #  blank=True, default=None
+    date_resolve = models.DateTimeField(auto_now_add=False, blank=True, null=True)
     department_assignment = models.ForeignKey(Department, on_delete=models.CASCADE)
     problem_category = models.ForeignKey(DepartmentProblem, on_delete=models.CASCADE, default='', related_name="ticket_problem_category")
     user_requestor = models.ForeignKey(User, on_delete=models.CASCADE, related_name="ticket_user_requestor")  # CZY MOZE USER? #cały dział czy osoby lub osoba

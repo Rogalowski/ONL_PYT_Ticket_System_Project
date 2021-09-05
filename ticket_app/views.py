@@ -79,14 +79,15 @@ class TicketCreate(View):
             user_assignment = form.cleaned_data['user_assignment']
             # print(f"Choosen user ass: {user_assignment }")
             # date_creation = form.cleaned_data['date_creation']
-            # date_update = form.cleaned_data['date_update']
+            date_update = form.cleaned_data['date_update']
             # date_resolve = form.cleaned_data['date_resolve']
             print('CHECK')
             print(*user_assignment.filter(department=department_assignment))
             print(problem_category.department.name_department)
             print(department_assignment.name_department)
 
-
+            # check if Department choose is the same  department from problem category. If not it will show error
+            # Problem Categroy from other department assignment is prohibet
             if department_assignment.name_department == problem_category.department.name_department:
 
                 # ticket = Ticket.objects.create(**form.cleaned_data)

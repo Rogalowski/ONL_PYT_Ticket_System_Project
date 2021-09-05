@@ -16,7 +16,6 @@ from django.forms import MultiValueField, Textarea, ModelForm, TextInput, CharFi
 #                                               choices=User.objects.all().values_list('pk', 'username'),
 #                                               required=True)
 
-
 class TicketForm(ModelForm):
     class Meta:
         model = Ticket
@@ -31,6 +30,19 @@ class TicketForm(ModelForm):
             'user_assignment',
         )
 
+class TicketUpdateForm(ModelForm):
+    class Meta:
+        model = Ticket
+        fields = (
+            'title',
+            'description',
+            # 'status',
+            'priorytet',
+            'department_assignment',
+            'problem_category',
+            'user_requestor',
+            'user_assignment',
+        )
     # def to_internal_value(self, data):
     #     # check for "date_resolve": "" and convert to None
     #     if data['date_resolve'] == '':

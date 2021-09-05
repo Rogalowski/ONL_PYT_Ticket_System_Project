@@ -1,0 +1,24 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home Ticket System</title>
+</head>
+<body>
+
+<img src="{% static 'ticket_banner.png' %}" alt="TICKET SYSTEM"> <br>
+<h4> <a href="   {% url 'home_index' %} " > HOME SCREEN </a>  </h4>
+            {% block content %}
+Some  Block Content
+            {% endblock content %}
+
+
+
+<footer>
+   <p> FOOTER: <br>
+    SIGN IN / LOGIN / LOGOUT </p>
+</footer>
+
+</body>
+</html>

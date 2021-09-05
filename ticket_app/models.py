@@ -1,28 +1,36 @@
 from django.db import models
 from django.contrib.auth.models import PermissionsMixin, AbstractUser
 
+# STATUS_STATE = (
+#     ('Schedule', 'Schedule'),  # pending
+#
+#     ('Successfull', 'Successfull'), # Resolved
+#     ('Not Successfull', 'Not Successfull'),
+# )
+# class StatusState(models.Model):
+#     name_reason_stat = models.CharField(max_length=64)
+#     # name_reason_stat = models.CharField(choices=STATUS_STATE, max_length=64)
+
+
 STATUS = (
     ('Not Acknowledged', 'Not Acknowledged'),
-    ('Pending', 'Pending'),
+    ('Pending ', 'Pending'),
+    ('Pending Requestor Information', 'Pending Requestor Information'),
     ('Work in Progress', 'Work in Progress'),
-    ('Resolved', 'Resolved'),
-)
-
-STATUS_REASON = (
-    ('Schedule', 'Schedule'),
-    ('Requestor Information,', 'Requestor Information'),
-    ('Successfull', 'Successfull'),
-    ('Not Successfull', 'Not Successfull'),
+    ('Blocked', 'Blocked'),
+    ('Dropped', 'Dropped'),
+    ('Resolved Successfull', 'Resolved Successfull'),
 )
 
 PRIORITY = (
-    (1, 'Low'),
-    (2, 'Medium'),
-    (3, 'High'),
-    (4, 'ASAP'),
+    ('Low', 'Low'),
+    ('Medium', 'Medium'),
+    ('High', 'High'),
+    ('ASAP', 'ASAP'),
 )
 
 DEPARTMENTS = (
+    ('Test', 'Test'),
     ('IT', 'IT'),
     ('HR', 'HR'),
     ('PM', 'PM'),
@@ -30,10 +38,10 @@ DEPARTMENTS = (
 )
 
 CATEGORY_PROBLEM = (
-    ('Desktops/laptops', 'Desktops/laptops'),
+    ('Desktops/Software', 'Desktops/Software'),
     ('Pherieral devices', 'Pherieral devices'),
     ('Mobile Devices', 'Mobile Devices'),
-    ('Network Infrastructure', 'Network Infrastructure'),
+    ('Network/Infrastructure', 'Network/Infrastructure'),
 
     ('Work Schedule', 'Work Schedule'),
     ('Hiring Process', 'Hiring Process'),
@@ -43,7 +51,6 @@ CATEGORY_PROBLEM = (
     ('Project realization', 'Project realization'),
     ('Improvement', 'Improvement'),
     ('Inspection', 'Inspection'),
-    ('Desktops/laptops', 'Desktops/laptops'),
 
     ('Invoices', 'Invoices'),
     ('Payment', 'Payment'),
@@ -52,34 +59,37 @@ CATEGORY_PROBLEM = (
 
     ('Other', 'Other'),
 )
-class StatusState(models.Model):
-    name_reason_stat = models.CharField(max_length=64)
-    # name_reason_stat = models.CharField(choices=REASON, max_length=64)
 
 
-class Status(models.Model):
-    name_status = models.CharField(choices=STATUS, max_length=64)
-    status_statement = models.OneToOneField(StatusState, on_delete=models.CASCADE)
+# class Status(models.Model):
+#     name_status = models.CharField(choices=STATUS, max_length=64)
+    # status_statement = models.OneToOneField(StatusState, on_delete=models.CASCADE)
+    # status_statement = models.CharField(choices=CATEGORY_PROBLEM, max_length=64)
 
 
 class Department(models.Model):
-    name_department = models.CharField(choices=DEPARTMENTS, max_length=64)
+    name_department = models.CharField(max_length=64)
     desc_department = models.CharField(max_length=255)
-    # category_problem = models.CharField(choices=DEPT_PROBLEM, max_length=255)
+
+    def __str__(self):
+        return self.name_department
 
 
 class DepartmentProblem(models.Model):
-    department = models.OneToOneField(Department, on_delete=models.CASCADE)
+    department = models.ForeignKey(Department, on_delete=models.CASCADE)
     category_problem = models.CharField(choices=CATEGORY_PROBLEM, max_length=64)
     # type_dept_problem = models.OneToOneField(TypeDeptProblem) #opcjonalnie kiedys
 
+    def __str__(self):
+        self.dept_and_problem = f'{self.department} :: {self.category_problem}'
+        return self.dept_and_problem
 
 # class TypeDeptProblem(models.Model): #opcjonalnie kiedys
 #     name_problem = models.CharField(choices=TYPE_PROBLEM, max_length=64)
 #     name_problem = models.OneToOneField(DepartmentProblems)
 
 
-class User(AbstractUser, PermissionsMixin):
+class User(AbstractUser):
     # username = models.CharField()
     # first_name = models.CharField(_('first name'), max_length=150, blank=True)
     # last_name = models.CharField(_('last name'), max_length=150, blank=True)
@@ -87,35 +97,39 @@ class User(AbstractUser, PermissionsMixin):
     # is_staff = models.BooleanField()
     # is_active = models.BooleanField(),
     # date_joined = models.DateTimeField(_('date joined'), default=timezone.now)
-    address_city = models.CharField(max_length=64)
-    phone_number = models.IntegerField()
-    department = models.OneToOneField(Department, on_delete=models.CASCADE)
+    address_city = models.CharField(max_length=64, default='N/A')
+    phone_number = models.IntegerField(default=0)
+    department = models.ForeignKey(Department, on_delete=models.CASCADE, default='1')
 
-class Correspondence(models.Model):
-    user = models.OneToOneField(AbstractUser, on_delete=models.CASCADE)  # CZY MOZE USER?
-    description = models.CharField(max_length=1000)
-    date_creation = models.DateTimeField(auto_now_add=True)
+    def __str__(self):
+        # self.name_and_dept = f'{self.username} :: {self.department} Department'
+        return self.username
 
 class HistoryTicket(models.Model):
     description = models.CharField(max_length=255)
     date_creation = models.DateTimeField(auto_now_add=True)
 
+
 class Ticket(models.Model):
     title = models.CharField(max_length=64)
-    description = models.CharField(max_length=1000)
-    # status = models.CharField(choices=STATUS, default='Not Acknowledged')
-    status = models.OneToOneField(Status, on_delete=models.CASCADE, default='Not Acknowledged')
-    # status_state?
+    description = models.TextField(max_length=1000)
+    status = models.CharField(choices=STATUS, max_length=64, default='Not Acknowledged')
     priorytet = models.CharField(choices=PRIORITY, max_length=64, default=1)
     date_creation = models.DateTimeField(auto_now_add=True)
-    date_resolve = models.DateTimeField(auto_now_add=True)
-    correspondence = models.ManyToManyField(Correspondence)  # ''?
-    department_assignment = models.OneToOneField(Department, on_delete=models.CASCADE)
-    problem_problem_category = models.OneToOneField(DepartmentProblem, on_delete=models.CASCADE)
-    user_requestor = models.ForeignKey(AbstractUser, on_delete=models.CASCADE)  # CZY MOZE USER? #cały dział czy osoby lub osoba
-    file_path = models.FilePathField()
-    history_tt = models.ManyToManyField(HistoryTicket, on_delete=models.CASCADE)  # osobna tabela do tego? ma zbierac zmiany w tt typu status, korespondencja, categoria przez kogo zostala utworzona zmiana
+    date_update = models.DateTimeField(auto_now=True)
+    date_resolve = models.DateTimeField(auto_now_add=True) #  blank=True, default=None
+    department_assignment = models.ForeignKey(Department, on_delete=models.CASCADE)
+    problem_category = models.ForeignKey(DepartmentProblem, on_delete=models.CASCADE, default='', related_name="ticket_problem_category")
+    user_requestor = models.ForeignKey(User, on_delete=models.CASCADE, related_name="ticket_user_requestor")  # CZY MOZE USER? #cały dział czy osoby lub osoba
+    user_assignment = models.ManyToManyField(User)
+    # file_path = models.FilePathField()
+    # history_tt = models.ManyToManyField(HistoryTicket, on_delete=models.CASCADE)  # osobna tabela do tego? ma zbierac zmiany w tt typu status, korespondencja, categoria przez kogo zostala utworzona zmiana
 
 
-
+class Correspondence(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    description = models.CharField(max_length=1000)
+    date_creation = models.DateTimeField(auto_now_add=True)
+    ticket_correspondence = models.ForeignKey(Ticket, related_name="ticket_correspondence",
+                                   on_delete=models.CASCADE, default='')  # ''?
 

@@ -15,7 +15,17 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.conf.urls.static import static  # static ROOT import
+from django.conf import settings  # static ROOT import
+
+from ticket_app.views import HomeView, TicketList, TicketCreate
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-]
+    path('', HomeView.as_view(), name="home_index"),
+    path('tickets/', TicketList.as_view(), name="ticket_list"),
+    path('create_ticket/', TicketCreate.as_view(), name="ticket_create"),
+
+
+
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)  # static ROOT

@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+            {% block content %}
+
+
+<h3>
+
+ <ul> {% for ticket in tickets %}
+    <li> <h3> ID:{{ ticket.id }} <br>
+         Title: {{ ticket.title }} :: Content: {{ ticket.description }}</h3>
+  Department assign: {{ ticket.department_assignment }} :: Status: {{ ticket.status }} :: Requestor: {{ ticket.user_requestor }}</li> User assigned:
+{# iterate for all users assignments and it list all assignments   #}
+     {% for assignment in ticket.user_assignment.all %}
+                   <b>     {{ assignment}}</b> ,
+                   {% endfor %}
+
+{% endfor %} </ul>
+</h3>
+
+ {% endblock content %}

@@ -10,7 +10,7 @@ from django.contrib.auth.models import PermissionsMixin, AbstractUser
 # class StatusState(models.Model):
 #     name_reason_stat = models.CharField(max_length=64)
 #     # name_reason_stat = models.CharField(choices=STATUS_STATE, max_length=64)
-
+from django.utils import timezone
 
 STATUS = (
     ('Not Acknowledged', 'Not Acknowledged'),
@@ -115,7 +115,9 @@ class Ticket(models.Model):
     description = models.TextField(max_length=1000)
     status = models.CharField(choices=STATUS, max_length=64, default='Not Acknowledged')
     priorytet = models.CharField(choices=PRIORITY, max_length=64, default=1)
-    date_creation = models.DateTimeField(auto_now_add=True)
+    # date_creation = models.DateTimeField(auto_now_add=True, blank=True, null=True )
+    date_creation = models.DateTimeField(default=timezone.now(), blank=True)
+    # date_creation = models.DateTimeField(auto_now_add=True, blank=True)
     date_update = models.DateTimeField(auto_now=True)
     date_resolve = models.DateTimeField(auto_now_add=False, blank=True, null=True)
     department_assignment = models.ForeignKey(Department, on_delete=models.CASCADE)

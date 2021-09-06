@@ -2,6 +2,7 @@ from django.forms import ModelForm
 from django import forms
 from ticket_app.models import STATUS, PRIORITY, DEPARTMENTS, CATEGORY_PROBLEM, Ticket, User
 from django.forms import MultiValueField, Textarea, ModelForm, TextInput, CharField, ChoiceField
+from django.forms.widgets import HiddenInput
 
 # class TicketForm(forms.Form):
 #     title = forms.CharField(required=True)
@@ -17,18 +18,21 @@ from django.forms import MultiValueField, Textarea, ModelForm, TextInput, CharFi
 #                                               required=True)
 
 class TicketForm(ModelForm):
+
     class Meta:
         model = Ticket
         fields = (
             'title',
             'description',
-            # 'status',
+            'status',
             'priorytet',
             'department_assignment',
             'problem_category',
             'user_requestor',
             'user_assignment',
         )
+        widgets = {'status': forms.HiddenInput()}
+        exclude = ('date_creation',)
 
 class TicketUpdateForm(ModelForm):
     class Meta:
@@ -36,7 +40,7 @@ class TicketUpdateForm(ModelForm):
         fields = (
             'title',
             'description',
-            # 'status',
+            'status',
             'priorytet',
             'department_assignment',
             'problem_category',
@@ -61,3 +65,15 @@ class TicketUpdateForm(ModelForm):
 #             'problem_category',
 #             'user_requestor',
 #         )
+
+class TicketSearchForm(ModelForm):
+
+    class Meta:
+        model = Ticket
+        fields = (
+            'title',
+            # 'status',
+        )
+        labels = {
+            "title": ("Search by title/status"),
+        }

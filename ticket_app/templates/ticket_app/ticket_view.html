@@ -23,7 +23,8 @@
  <li>   Date Update: {{ ticket.date_update }} </li>
  <li>  Date Resolve: {{ ticket.date_resolve }}</li> </h4>
 
-<h2>  <a href="{% url 'ticket_edit' ticket.id %} " > EDIT TICKET </a> </h2>
+<h2>  <a href="{% url 'ticket_edit' ticket.id %} " > EDIT TICKET  ----> updateuje create date wraz z update (przy edycji tez od razu wywala validacje nie potrzebene) </a> </h2>
+<h2>  <a href="{% url 'ticket_edit2' ticket.id %} " > EDIT TICKET2 ---> nie waliduje osob przypisanych :(</a> </h2>
 <h2>  <a href="{% url 'ticket_edit' ticket.id %} " > ADD CORESPONDENCE</a> </h2>
 
  <h3>CORESPONDENCE: TO DO</h3>

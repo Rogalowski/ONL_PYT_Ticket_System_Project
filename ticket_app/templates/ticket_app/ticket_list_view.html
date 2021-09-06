@@ -40,6 +40,27 @@
         {% else %}
 
      {% endif %}
+
+
+           {% if typed_name is not defined %}
+
+         <p>  {% for ticket in tickets2 %}
+              {{ forloop.counter }})   {{ ticket.title }}
+   {{ ticket.status }}
+
+             <b>   Assignment:  </b>
+
+                {% for assignment in ticket.user_assignment.all %}
+                {{ assignment }}
+                   {% endfor %}
+             </p>
+
+           {% empty %}
+            No products with provided <b>{{ typed_name  }} </b>  product name
+         {% endfor %}
+        {% else %}
+
+     {% endif %}
      </ul>
 
 

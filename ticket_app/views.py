@@ -52,13 +52,16 @@ class TicketList(View):
         if form.is_valid():
             # logika biznezowa np. zapis do bazy
             typed_name = form.cleaned_data['title']
+            typed_user = form.cleaned_data['user_requestor']
 
             filter_ticket_title = {'title__icontains': typed_name}
             filter_ticket_status = {'status__icontains': typed_name}
             tickets = Ticket.objects.filter(Q(**filter_ticket_title) | Q(**filter_ticket_status)).order_by('title').distinct()
+            tickets2 = Ticket.objects.filter(user_requestor=typed_user)
             # tickets = Ticket.objects.filter(title__icontains=title)
             # status = Ticket.objects.filter(status__icontains=status)
             context['tickets'] = tickets
+            context['tickets2'] = tickets2
             # context['status'] = status
 
         return render(request, 'ticket_app/ticket_list_view.html', context)

@@ -67,13 +67,16 @@ class TicketUpdateForm(ModelForm):
 #         )
 
 class TicketSearchForm(ModelForm):
-
+    title = forms.CharField(required=False)
+    user_requestor = forms.CharField(required=False)
     class Meta:
         model = Ticket
         fields = (
             'title',
+            'user_requestor',
             # 'status',
         )
+
         labels = {
             "title": ("Search by title/status"),
         }

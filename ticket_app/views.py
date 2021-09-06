@@ -56,12 +56,13 @@ class TicketList(View):
 
             filter_ticket_title = {'title__icontains': typed_name}
             filter_ticket_status = {'status__icontains': typed_name}
-            tickets = Ticket.objects.filter(Q(**filter_ticket_title) | Q(**filter_ticket_status)).order_by('title').distinct()
-            tickets2 = Ticket.objects.filter(user_requestor=typed_user)
+            filter_ticket_requester = {'user_requestor__username__icontains': typed_user}
+            tickets = Ticket.objects.filter(Q(**filter_ticket_title) | Q(**filter_ticket_status) and Q(**filter_ticket_requester) ).order_by('title').distinct()
+            # tickets2 = Ticket.objects.filter(user_requestor__username=typed_user)
             # tickets = Ticket.objects.filter(title__icontains=title)
             # status = Ticket.objects.filter(status__icontains=status)
             context['tickets'] = tickets
-            context['tickets2'] = tickets2
+
             # context['status'] = status
 
         return render(request, 'ticket_app/ticket_list_view.html', context)

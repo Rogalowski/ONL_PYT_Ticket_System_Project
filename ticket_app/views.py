@@ -106,13 +106,13 @@ class TicketCreate(View):
             print(f"Choosen problem: {problem_category}")
             user_requestor = form.cleaned_data['user_requestor']
             print(f"Choosen user req: {user_requestor}")
-            user_assignment = form.cleaned_data['user_assignment']
+            # user_assignment = form.cleaned_data['user_assignment']
             # print(f"Choosen user ass: {user_assignment }")
             # date_creation = form.cleaned_data['date_creation']
             # date_update = form.cleaned_data['date_update']
             # date_resolve = form.cleaned_data['date_resolve']
             print('CHECK')
-            print(*user_assignment.filter(department=department_assignment))
+            # print(*user_assignment.filter(department=department_assignment))
             print(problem_category.department.name_department)
             print(department_assignment.name_department)
 
@@ -134,7 +134,11 @@ class TicketCreate(View):
                     # date_update=date_update,
                     # date_resolve=date_resolve,
                 )
-                ticket_create.user_assignment.add(*user_assignment.filter(department=department_assignment))
+                # Will add all selected users_assignet to tt from selected department (other users will missed)
+                # ticket_create.user_assignment.add(*user_assignment.filter(department=department_assignment))
+
+                # Will add all users_assign to tt from selected department
+                ticket_create.user_assignment.add(*User.objects.filter(department_id=department_assignment.pk))
                 return redirect('ticket_list')
             else:
                 context = {

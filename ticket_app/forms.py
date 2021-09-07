@@ -29,7 +29,7 @@ class TicketForm(ModelForm):
             'department_assignment',
             'problem_category',
             'user_requestor',
-            'user_assignment',
+            # 'user_assignment',
         )
         widgets = {'status': forms.HiddenInput()}
         exclude = ('date_creation',)

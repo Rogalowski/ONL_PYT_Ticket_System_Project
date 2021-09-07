@@ -19,12 +19,14 @@ from django.conf.urls.static import static  # static ROOT import
 from django.conf import settings  # static ROOT import
 
 from ticket_app.views import HomeView, TicketList, TicketCreate, TicketView, TicketEditView, TicketEditView2
+# TicketCorespondenceCreate
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', HomeView.as_view(), name="home_index"),
     path('tickets/', TicketList.as_view(), name="ticket_list"),
     path('create_ticket/', TicketCreate.as_view(), name="ticket_create"),
+    # path('ticket/<int:ticket_id>/create_corespondence', TicketCorespondenceCreate.as_view(), name="corespondence_create"),  # Creation View migrates tt direct, TicketView
     path('ticket/<int:ticket_id>', TicketView.as_view(), name="ticket"),
     path('ticket_edit/<int:ticket_id>', TicketEditView.as_view(), name="ticket_edit"),
     path('ticket_edit2/<int:ticket_id>', TicketEditView2.as_view(), name="ticket_edit2"),

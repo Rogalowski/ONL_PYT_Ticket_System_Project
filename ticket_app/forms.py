@@ -1,6 +1,6 @@
 from django.forms import ModelForm
 from django import forms
-from ticket_app.models import STATUS, PRIORITY, DEPARTMENTS, CATEGORY_PROBLEM, Ticket, User
+from ticket_app.models import STATUS, PRIORITY, DEPARTMENTS, CATEGORY_PROBLEM, Ticket, User, Correspondence
 from django.forms import MultiValueField, Textarea, ModelForm, TextInput, CharField, ChoiceField
 from django.forms.widgets import HiddenInput
 
@@ -80,3 +80,11 @@ class TicketSearchForm(ModelForm):
         labels = {
             "title": ("Search by title/status"),
         }
+
+class TicketCorespondenceForm(ModelForm):
+    class Meta:
+        model = Correspondence
+        fields = (
+            'user',
+            'description',
+        )

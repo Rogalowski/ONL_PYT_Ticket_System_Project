@@ -22,14 +22,18 @@
 <h4> <li>  Date Creation: {{ ticket.date_creation }} </li>
  <li>   Date Update: {{ ticket.date_update }} </li>
  <li>  Date Resolve: {{ ticket.date_resolve }}</li> </h4>
-
-<h2>  <a href="{% url 'ticket_edit' ticket.id %} " > EDIT TICKET  ----> updateuje create date wraz z update (przy edycji tez od razu wywala validacje nie potrzebene) </a> </h2>
-<h2>  <a href="{% url 'ticket_edit2' ticket.id %} " > EDIT TICKET2 ---> nie waliduje osob przypisanych :(</a> </h2>
-<h2>  <a href="{% url 'ticket_edit' ticket.id %} " > ADD CORESPONDENCE</a> </h2>
-
- <h3>CORESPONDENCE: TO DO</h3>
-
 </ul>
+
+<h3>  <a href="{% url 'ticket_edit' ticket.id %} " > EDIT TICKET  ----> updateuje create date wraz z update (przy edycji tez od razu wywala validacje nie potrzebene) </a> </h3>
+<h3>  <a href="{% url 'ticket_edit2' ticket.id %} " > EDIT TICKET2 ---> nie waliduje osob przypisanych :(</a> </h3>
+{#<h3>  <a href="{% url 'corespondence_create' ticket.id %} " > ADD CORESPONDENCE</a> </h3>   # Creation View migrates tt direct, TicketView  #}
+
+ <h2>CORESPONDENCE: {% include 'base_form.html' with form=form %} </h2>
+{% for corespond in corespondence %}
+   <p>   {{ forloop.counter}})  Date of add: {{ corespond.date_creation }} <br>
+        User: {{ corespond.user }} Description: {{ corespond.description }} </p>
+ {% endfor %}
+
 
 
  {% endblock content %}

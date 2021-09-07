@@ -6,10 +6,10 @@
 
 <p>
  <ul> {% for ticket in tickets %}
-    <li>   <a href="{% url 'ticket' ticket.id %} " > ID:{{ ticket.id }} </a>   :: Status: {{ ticket.status }}  <br>
+  <b>   {{ forloop.counter}})   </b>     <a href="{% url 'ticket' ticket.id %} " > ID:{{ ticket.id }} </a>   :: Status: {{ ticket.status }}  <br>
          Title: {{ ticket.title }} <br>
 {#        Content: {{ ticket.description }} <br>#}
-  Department assign: {{ ticket.department_assignment }} :: Requestor: {{ ticket.user_requestor }}</li> User assigned:
+  Department assign: {{ ticket.department_assignment }} :: Requestor: {{ ticket.user_requestor }} User assigned:
 {# iterate for all users assignments and it list all assignments   #}
      {% for assignment in ticket.user_assignment.all %}
                 {{ assignment}}
@@ -24,7 +24,7 @@
        {% if typed_name is not defined %}
 
          <p>  {% for ticket in tickets %}
-              {{ forloop.counter }})   {{ ticket.title }}
+    <b>   {{ forloop.counter}})   </b>       {{ ticket.title }}
    {{ ticket.status }}
 
              <b>   Assignment:  </b>

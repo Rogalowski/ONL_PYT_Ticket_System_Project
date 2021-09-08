@@ -31,10 +31,22 @@ class HomeView(View):
 
 
 class TicketList(View):
-    def get(self, request):
-        tickets = Ticket.objects.all()
+    def get(self, request, department):
+
+        global tickets
+        if department == "IT":
+            tickets = Ticket.objects.all().filter(department_assignment=2).exclude(status='Resolved Successfull')
+        elif department == "HR":
+            tickets = Ticket.objects.all().filter(department_assignment=3).exclude(status='Resolved Successfull')
+        elif department == "PM":
+            tickets = Ticket.objects.all().filter(department_assignment=4).exclude(status='Resolved Successfull')
+        elif department == "FB":
+            tickets = Ticket.objects.all().filter(department_assignment=5).exclude(status='Resolved Successfull')
+        elif department == 'ALL':
+            tickets = Ticket.objects.all()
         context = {
             "tickets": tickets,
+            'department': department,
             'form': TicketSearchForm,
         }
         # ticket = Ticket.objects.get(pk=kwargs['ticket_id'])  # dzieki temu mozemy sie dostac w jinja (lista iterowalna) product_detail.categories.all
@@ -88,6 +100,7 @@ class TicketCreate(View):
             'form': TicketForm(),
         }
         return render(request, 'ticket_app/ticket_create_view.html', context)
+
     def post(self, request):
         form = TicketForm(request.POST)
         context = {
@@ -167,6 +180,7 @@ class TicketView(View):
             'form': TicketCorespondenceForm(),
                 }
         return render(request, 'ticket_app/ticket_view.html', context)
+
     def post(self, request, *args, **kwargs):
         form = TicketCorespondenceForm(request.POST)
 

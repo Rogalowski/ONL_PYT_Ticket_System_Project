@@ -103,8 +103,9 @@ class User(AbstractUser):
     department = models.ForeignKey(Department, on_delete=models.CASCADE, default='1')
 
     def __str__(self):
-        # self.name_and_dept = f'{self.username} :: {self.department} Department'
-        return self.username
+        self.name_and_dept = f'{self.username} from {self.department} Department'
+        # return self.username
+        return self.name_and_dept
 
 class HistoryTicket(models.Model):
     description = models.CharField(max_length=255)

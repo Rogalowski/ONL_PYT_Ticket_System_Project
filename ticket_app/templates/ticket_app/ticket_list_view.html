@@ -9,13 +9,13 @@
 
 <p>
  <ul> {% for ticket in ticket_pages %}
-  <b>   {{ forloop.counter}})   </b>     <a href="{% url 'ticket' ticket.id %} " > ID:{{ ticket.id }} </a>   :: Status: {{ ticket.status }}  <br>
-         Title: {{ ticket.title }} <br>
+  <b>   {{ forloop.counter}})   </b>     <a href="{% url 'ticket' ticket.id %} " > ID:{{ ticket.id }} </a>   :: <b>Status: </b> {{ ticket.status }}  <br>
+         <b>Title: </b>{{ ticket.title }} <br>
 {#        Content: {{ ticket.description }} <br>#}
-  Department assign: {{ ticket.department_assignment }} :: Requestor: {{ ticket.user_requestor }} User assigned:
+<b>  Department assign:</b> {{ ticket.department_assignment }} :: <b>Requestor:</b> {{ ticket.user_requestor }} <b>User assigned:</b>
 {# iterate for all users assignments and it list all assignments   #}
      {% for assignment in ticket.user_assignment.all %}
-                {{ assignment}}
+                 <b>[</b>{{ assignment }}<b>]</b>
                    {% endfor %}
 </p>
 {% endfor %}  </ul>

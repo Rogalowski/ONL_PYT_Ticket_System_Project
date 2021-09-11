@@ -29,7 +29,7 @@
          {% if user.is_authenticated %}
       <b>    <a href="{% url 'user_details'  assignment.username  %} " > {{ assignment}} </a> </b>
          {% else %}
-               <b>     [ {{ assignment }}  ] </b>
+               <b>     [{{ assignment }}] </b>
          {% endif %}
 
 {% endfor %} </li>

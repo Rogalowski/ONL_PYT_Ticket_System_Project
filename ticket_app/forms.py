@@ -88,7 +88,7 @@ class TicketCorespondenceForm(ModelForm):
     class Meta:
         model = Correspondence
         fields = (
-            'user',
+            # 'user',
             'description',
         )
 

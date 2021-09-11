@@ -218,29 +218,30 @@ class TicketView(View):
     def get(self, request, *args, **kwargs):
         ticket = Ticket.objects.get(id=kwargs['ticket_id'])
         corespondence = Correspondence.objects.filter(ticket_correspondence_id=ticket.pk)
-        user_details = request.user.username #DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDd
         context = {
             'ticket': ticket,
             'corespondence': corespondence,
             'form': TicketCorespondenceForm(),
-            'user_details': user_details,
+
                 }
         return render(request, 'ticket_app/ticket_view.html', context)
 
     def post(self, request, *args, **kwargs):
         form = TicketCorespondenceForm(request.POST)
 
+
         if form.is_valid():
-            user = form.cleaned_data['user']
+            logged_user = User.objects.get(username=request.user.username)
+            # user = form.cleaned_data['user']
             description = form.cleaned_data['description']
 
-            print(f"Choosen: {user}")
+            # print(f"Choosen: {user}")
             print(f"Choosen: {description}")
             print(Ticket.objects.get(id=kwargs['ticket_id']))
 
             ticket_correspondence = Ticket.objects.get(id=kwargs['ticket_id'])
             Correspondence.objects.create(
-                user=user,
+                user=logged_user,  #user
                 description=description,
                 ticket_correspondence_id=ticket_correspondence.pk
             )

@@ -353,10 +353,7 @@ class TicketEditView2(UpdateView):
                     department_assignment=department_assignment,
                     problem_category=problem_category,
                     user_requestor=user_requestor,
-                    # user_assignment=user_assignment,
-                    # date_creation=date_creation,
-                    # date_update=date_update,
-                    # date_resolve=date_resolve,
+
                 )
                 ticket_update.user_assignment.clear() # clering all assignments before (after creation or last update)
                 ticket_update.save()
@@ -364,20 +361,6 @@ class TicketEditView2(UpdateView):
                 # ticket_update.user_assignment.add(*user_assignment)
                 ticket_update.user_assignment.add(*user_assignment.filter(department=department_assignment))
 
-
-                # LUBB
-                # ticket_update = Ticket.objects.get(id=kwargs['ticket_id'])
-                # ticket_update.title = title
-                # ticket_update.description = description
-                # ticket_update.status = status
-                # ticket_update.priorytet = priorytet
-                # ticket_update.department_assignment.name_department = department_assignment
-                # ticket_update.problem_category.category_problem = problem_category
-                # ticket_update.user_requestor.username = user_requestor
-                # #
-                # ticket_update.save()
-                # ticket_update.user_assignment.clear()
-                # ticket_update.user_assignment.add(*user_assignment.filter(department=department_assignment))
 
 
                 return redirect('ticket_list', 'ALL')
@@ -394,6 +377,7 @@ class TicketEditView2(UpdateView):
         }
         return render(request, 'ticket_app/ticket_create_view.html', context)
 
+#MOZNA USUNAC, PRAWIDLOWY TICKET EDIT VIEW2
 class TicketEditView(View):
     def get(self, request, *args, **kwargs):
         ticket = Ticket.objects.filter(id=kwargs['ticket_id']).values()[0] # ADD FILLED VALUES FROM OBJECT TO EDIT

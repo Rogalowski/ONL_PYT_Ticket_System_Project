@@ -47,6 +47,8 @@ class TicketUpdateForm(ModelForm):
             'user_requestor',
             'user_assignment',
         )
+        exclude = ('date_creation',)
+
     # def to_internal_value(self, data):
     #     # check for "date_resolve": "" and convert to None
     #     if data['date_resolve'] == '':

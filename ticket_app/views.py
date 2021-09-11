@@ -309,23 +309,8 @@ class TicketEditView2(UpdateView):
     def get_success_url(self):
         return reverse('ticket_list') # , kwargs=['ticket_id']
 
-
-
-class TicketEditView(View):
-    def get(self, request, *args, **kwargs):
-        ticket = Ticket.objects.filter(id=kwargs['ticket_id']).values()[0] # ADD FILLED VALUES FROM OBJECT TO EDIT
-        # ticket = Ticket.objects.get(id=kwargs['ticket_id'])
-
-        context = {
-            'form': TicketUpdateForm(ticket),
-            # 'form': TicketUpdateForm(),
-            'ticket': ticket,
-        }
-        return render(request, 'ticket_app/ticket_create_view.html', context)
-
-
     def post(self, request, *args, **kwargs):
-        form = TicketForm(request.POST)
+        form = TicketUpdateForm(request.POST)
 
         if form.is_valid():
             title = form.cleaned_data['title']
@@ -340,9 +325,9 @@ class TicketEditView(View):
             print(f"Choosen problem: {problem_category}")
             user_requestor = form.cleaned_data['user_requestor']
             print(f"Choosen user req: {user_requestor}")
-            # user_assignment = form.cleaned_data['user_assignment']
+            user_assignment = form.cleaned_data['user_assignment']
             # user_assignment = request.POST.get('user_assignment')
-            user_assignment = request.POST.getlist('user_assignment')
+            # user_assignment = request.POST.getlist('user_assignment')
             print(f"Choosen user ass: {user_assignment }")
             # date_creation = form.cleaned_data['date_creation']
             # date_update = form.cleaned_data['date_update']
@@ -375,9 +360,109 @@ class TicketEditView(View):
                 )
                 ticket_update.user_assignment.clear() # clering all assignments before (after creation or last update)
                 ticket_update.save()
+
+                # ticket_update.user_assignment.add(*user_assignment)
                 ticket_update.user_assignment.add(*user_assignment.filter(department=department_assignment))
 
 
+                # LUBB
+                # ticket_update = Ticket.objects.get(id=kwargs['ticket_id'])
+                # ticket_update.title = title
+                # ticket_update.description = description
+                # ticket_update.status = status
+                # ticket_update.priorytet = priorytet
+                # ticket_update.department_assignment.name_department = department_assignment
+                # ticket_update.problem_category.category_problem = problem_category
+                # ticket_update.user_requestor.username = user_requestor
+                # #
+                # ticket_update.save()
+                # ticket_update.user_assignment.clear()
+                # ticket_update.user_assignment.add(*user_assignment.filter(department=department_assignment))
+
+
+                return redirect('ticket_list', 'ALL')
+            else:
+                context = {
+                    'form': form,
+                    'result': f"ASSIGNED DEPT SHOULD HAVE SAME DEPT PROBLEM"
+                }
+                return render(request, 'ticket_app/ticket_create_view.html', context)
+
+        context = {
+            'form': form,
+            'result': f"SOMETHING GOES WRONG"
+        }
+        return render(request, 'ticket_app/ticket_create_view.html', context)
+
+class TicketEditView(View):
+    def get(self, request, *args, **kwargs):
+        ticket = Ticket.objects.filter(id=kwargs['ticket_id']).values()[0] # ADD FILLED VALUES FROM OBJECT TO EDIT
+        # ticket = Ticket.objects.get(id=kwargs['ticket_id'])
+
+        context = {
+            'form': TicketUpdateForm(ticket),
+            # 'form': TicketUpdateForm(),
+            'ticket': ticket,
+        }
+        return render(request, 'ticket_app/ticket_create_view.html', context)
+
+
+    def post(self, request, *args, **kwargs):
+        form = TicketUpdateForm(request.POST)
+
+        if form.is_valid():
+            title = form.cleaned_data['title']
+            description = form.cleaned_data['description']
+            print(f"Choosen: {title}")
+            status = form.cleaned_data['status']
+            priorytet = form.cleaned_data['priorytet']
+            print(f"Choosen: {priorytet}")
+            department_assignment = form.cleaned_data['department_assignment']
+            print(f"Choosen department: {department_assignment}")
+            problem_category = form.cleaned_data['problem_category']
+            print(f"Choosen problem: {problem_category}")
+            user_requestor = form.cleaned_data['user_requestor']
+            print(f"Choosen user req: {user_requestor}")
+            user_assignment = form.cleaned_data['user_assignment']
+            # user_assignment = request.POST.get('user_assignment')
+            # user_assignment = request.POST.getlist('user_assignment')
+            print(f"Choosen user ass: {user_assignment }")
+            # date_creation = form.cleaned_data['date_creation']
+            # date_update = form.cleaned_data['date_update']
+            # date_resolve = form.cleaned_data['date_resolve']
+            print('CHECK')
+            # print(*user_assignment.filter(department=department_assignment))
+            print(problem_category.department.name_department)
+            print(department_assignment.name_department)
+
+            # check if Department choose is the same  department from problem category. If not it will show error
+            # Problem Categroy from other department assignment is prohibet
+            if department_assignment.name_department == problem_category.department.name_department:
+
+                # ticket = Ticket.objects.create(**form.cleaned_data)
+                ticket_update= Ticket(
+                # ticket_update = Ticket.objects.update_or_create(
+                # ticket_update = Ticket.objects.update(
+                    id=kwargs['ticket_id'],
+                    title=title,
+                    description=description,
+                    status=status,
+                    priorytet=priorytet,
+                    department_assignment=department_assignment,
+                    problem_category=problem_category,
+                    user_requestor=user_requestor,
+                    # user_assignment=user_assignment,
+                    # date_creation=date_creation,
+                    # date_update=date_update,
+                    # date_resolve=date_resolve,
+                )
+                ticket_update.user_assignment.clear() # clering all assignments before (after creation or last update)
+                ticket_update.save()
+
+                # ticket_update.user_assignment.add(*user_assignment)
+                ticket_update.user_assignment.add(*user_assignment.filter(department=department_assignment))
+                # usr = Ticket.objects.filter(user_assignment__department=department_assignment)
+                # filtered = filter(lambda score: score >= 70, user_assignment)
 
 
 
@@ -396,11 +481,7 @@ class TicketEditView(View):
                 # ticket_update.user_assignment.add(*user_assignment.filter(department=department_assignment))
 
 
-
-
-
-
-                return redirect('ticket_list')
+                return redirect('ticket_list', 'ALL')
             else:
                 context = {
                     'form': form,

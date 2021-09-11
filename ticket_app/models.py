@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import PermissionsMixin, AbstractUser
+from django.utils import timezone
 
 # STATUS_STATE = (
 #     ('Schedule', 'Schedule'),  # pending
@@ -10,7 +11,7 @@ from django.contrib.auth.models import PermissionsMixin, AbstractUser
 # class StatusState(models.Model):
 #     name_reason_stat = models.CharField(max_length=64)
 #     # name_reason_stat = models.CharField(choices=STATUS_STATE, max_length=64)
-from django.utils import timezone
+
 
 STATUS = (
     ('Not Acknowledged', 'Not Acknowledged'),

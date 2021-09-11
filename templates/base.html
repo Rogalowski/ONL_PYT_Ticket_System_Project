@@ -16,8 +16,20 @@ Some  Block Content
 
 
 <footer>
-   <p> FOOTER: <br>
-    SIGN IN / LOGIN / LOGOUT </p>
+   <p> SIGN IN  </p>
+<h3>
+                Hi, logged as:  {{ user.username }}
+        {% if user.is_authenticated %}
+            <a href="{% url 'user_logout_home' %}">Logout</a>
+
+            <p> Tickets on you: {{  current_user_req_tickets.count}}
+           <br> Requested tickets by you: {{ current_user_tickets.count }}
+            </p>
+
+                {% else %}
+            <h4><a href={% url 'user_login_home' %}>Login</a></h4>
+                {% endif %}
+</h3>
 </footer>
 
 </body>

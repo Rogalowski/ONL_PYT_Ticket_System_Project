@@ -1,5 +1,6 @@
 from datetime import datetime
 
+from django.contrib.auth import logout, login, authenticate
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.shortcuts import render, redirect, get_object_or_404
@@ -10,7 +11,11 @@ from django.views import View
 from django.views.generic import UpdateView
 
 from .models import Ticket, User, Correspondence
-from ticket_app.forms import TicketForm, TicketUpdateForm, TicketSearchForm, TicketCorespondenceForm
+from ticket_app.forms import TicketForm, TicketUpdateForm, TicketSearchForm, TicketCorespondenceForm, UserLoginForm
+
+
+
+
 
 
 class HomeView(View):
@@ -21,14 +26,37 @@ class HomeView(View):
         hr_tickets = Ticket.objects.all().filter(department_assignment=3)
         pm_tickets = Ticket.objects.all().filter(department_assignment=4)
         fb_tickets = Ticket.objects.all().filter(department_assignment=5)
+
+        current_user_tickets = ''
         context = {
             'all_tickets': all_tickets,
             'it_tickets': it_tickets,
             'hr_tickets': hr_tickets,
             'pm_tickets': pm_tickets,
             'fb_tickets': fb_tickets,
+            'current_user_tickets': current_user_tickets,
         }
+        if request.user.is_anonymous:
+            pass
+        else:
+            logged_user = request.user.username
+            current_user_tickets = Ticket.objects.filter(user_requestor__username=logged_user)
+            current_user_req_tickets = Ticket.objects.filter(user_assignment__username=logged_user)
+            print(logged_user)
+            print(current_user_req_tickets)
+            context = {
+                'all_tickets': all_tickets,
+                'it_tickets': it_tickets,
+                'hr_tickets': hr_tickets,
+                'pm_tickets': pm_tickets,
+                'fb_tickets': fb_tickets,
+                'current_user_tickets': current_user_tickets,
+                'current_user_req_tickets': current_user_req_tickets,
+            }
+            return render(request, 'ticket_app/home_view.html', context)
         return render(request, 'ticket_app/home_view.html', context)
+
+
 
 
 class TicketList(View):
@@ -459,3 +487,61 @@ class TicketEditView(UpdateView):
 #             'result': f"SOMETHING GOES WRONG"
 #         }
 #         return render(request, 'ticket_app/ticket_corespon_create_view.html', context)
+
+
+class UserLoginView(View):
+    def get(self, request, *args, **kwargs):
+        form = UserLoginForm()
+        return render(request, 'auth/login_user_view.html', {
+        'form': form
+
+    })
+    def post(self, request, *args, **kwargs):
+        form = UserLoginForm(request.POST)
+
+        if form.is_valid():
+
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password']
+            user = authenticate(username=username, password=password)
+
+            if user is not None:
+                login(request, user)
+                return redirect('home_index')
+                # return HttpResponseRedirect(reverse('products'))
+
+            else:
+                wrong_passes = "Wrong login or password!"
+                context = {
+                    'form': form,
+                    'wrong_passes': wrong_passes,
+                }
+                return render(request, 'auth/login_user_view.html', context)
+
+
+class UserLogoutView(View):
+    def get(self, request, *args, **kwargs):
+            logout(request)
+            return redirect('home_index')
+
+
+#DO POPRAWY
+class BaseView(View):
+    def get(self, request):
+        current_user_tickets = ''
+        context = {
+            'current_user_tickets': current_user_tickets,
+        }
+        if request.user.is_anonymous:
+            pass
+        else:
+            logged_user = request.user.username
+            current_user_tickets = Ticket.objects.filter(user_requestor__username=logged_user)
+            current_user_req_tickets = Ticket.objects.filter(user_assignment__username=logged_user)
+
+            context = {
+                'current_user_tickets': current_user_tickets,
+                'current_user_req_tickets': current_user_req_tickets,
+            }
+            return render(request, 'base.html', context)
+        return render(request, 'base.html', context)

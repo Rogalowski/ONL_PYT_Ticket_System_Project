@@ -1,0 +1,9 @@
+
+{% extends 'base.html' %}
+
+
+{% block content %}
+    {% include 'base_form.html' with form=form %}
+{{ wrong_passes }} {{ correct_passes }}
+
+{% endblock %}

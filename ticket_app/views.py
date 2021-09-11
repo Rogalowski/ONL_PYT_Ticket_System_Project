@@ -254,7 +254,7 @@ class TicketView(View):
         return render(request, 'ticket_app/ticket_corespon_create_view.html', context)
 
 
-class TicketEditView(UpdateView):
+class TicketEditView(LoginRequiredMixin, UpdateView):
     template_name = 'ticket_app/ticket_create_view.html'
     # form_class = ProductForm
 

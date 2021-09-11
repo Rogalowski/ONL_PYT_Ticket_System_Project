@@ -8,7 +8,7 @@
 
 
 <p>
- <ul> {% for ticket in tickets %}
+ <ul> {% for ticket in ticket_pages %}
   <b>   {{ forloop.counter}})   </b>     <a href="{% url 'ticket' ticket.id %} " > ID:{{ ticket.id }} </a>   :: Status: {{ ticket.status }}  <br>
          Title: {{ ticket.title }} <br>
 {#        Content: {{ ticket.description }} <br>#}
@@ -22,11 +22,11 @@
 
 
 
-                <ul>
+
 
        {% if typed_name is not defined %}
 
-         <p>  {% for ticket in tickets %}
+         <p>  {% for ticket in ticket_pages %}
     <b>   {{ forloop.counter}})   </b>       {{ ticket.title }}
    {{ ticket.status }}
 
@@ -40,9 +40,36 @@
            {% empty %}
             No products with provided <b>{{ typed_name  }} </b>  product name
          {% endfor %}
-        {% else %}
+
+                        {% else %}
 
      {% endif %}
+
+
+
+
+
+{#PAGINATOR PAGE - STRONY DO#}
+
+    <span class="step-links">
+        {% if ticket_pages.has_previous %}
+                        <a href="?page=1">&laquo; Pierwsza</a>
+            <a href="?page={{ ticket_pages.previous_page_number }}">Poprzednia</a>
+        {% endif %}
+
+        <span class="current">
+            Strona {{ ticket_pages.number }} z {{ ticket_pages.paginator.num_pages }}
+        </span>
+
+        {% if ticket_pages.has_next %}
+            <a href="?page={{ ticket_pages.next_page_number }}">Następna</a>
+                        <a href="?page={{ ticket_pages.paginator.num_pages }}">Ostatnia &raquo;</a>
+        {% endif %}
+  <a href="{% url 'home_index' %}" class="  rounded-0 pr-4 pl-4">Strona główna</a>
+
+    </span>
+
+
 
 
 

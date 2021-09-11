@@ -1,5 +1,6 @@
 from datetime import datetime
 
+from django.core.paginator import Paginator
 from django.db.models import Q
 from django.shortcuts import render, redirect, get_object_or_404
 
@@ -44,8 +45,14 @@ class TicketList(View):
             tickets = Ticket.objects.all().filter(department_assignment=5).exclude(status='Resolved Successfull')
         elif department == 'ALL':
             tickets = Ticket.objects.all()
+
+        paginator = Paginator(tickets, 6)  # wysw. liczbe wierszy na stronie
+        page = request.GET.get('page')
+        ticket_pages = paginator.get_page(page)
+
         context = {
-            "tickets": tickets,
+            # "tickets": tickets,
+            "ticket_pages": ticket_pages,
             'department': department,
             'form': TicketSearchForm,
         }
@@ -73,7 +80,13 @@ class TicketList(View):
             # tickets2 = Ticket.objects.filter(user_requestor__username=typed_user)
             # tickets = Ticket.objects.filter(title__icontains=title)
             # status = Ticket.objects.filter(status__icontains=status)
-            context['tickets'] = tickets
+
+            paginator = Paginator(tickets, 3)  # wysw. liczbe wierszy na stronie
+            page = request.GET.get('page')
+            ticket_pages = paginator.get_page(page)
+
+            # context['tickets'] = tickets
+            context['ticket_pages'] = ticket_pages
 
             # context['status'] = status
 

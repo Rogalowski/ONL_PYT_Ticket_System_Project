@@ -1,7 +1,10 @@
 {% extends 'base.html' %}
 
             {% block content %}
+                <b><a href="{{request.META.HTTP_REFERER}}">Go back</a> </b> <br> <br>
+
     {% include 'base_form.html' with form=form %}
+
 
 
 <p>

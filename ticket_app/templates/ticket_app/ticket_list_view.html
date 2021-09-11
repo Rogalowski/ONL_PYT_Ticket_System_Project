@@ -8,6 +8,7 @@
 
 
 <p>
+                <h2>Tickets On Queue: {{ tickets.count }}</h2>
  <ul> {% for ticket in ticket_pages %}
   <b>   {{ forloop.counter}})   </b>     <a href="{% url 'ticket' ticket.id %} " > ID:{{ ticket.id }} </a>   :: <b>Status: </b> {{ ticket.status }}  <br>
          <b>Title: </b>{{ ticket.title }} <br>

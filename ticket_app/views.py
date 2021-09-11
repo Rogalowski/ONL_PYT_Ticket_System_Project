@@ -86,6 +86,7 @@ class TicketList(View):
             "ticket_pages": ticket_pages,
             'department': department,
             'form': TicketSearchForm,
+            'tickets': tickets,
         }
         # ticket = Ticket.objects.get(pk=kwargs['ticket_id'])  # dzieki temu mozemy sie dostac w jinja (lista iterowalna) product_detail.categories.all
 

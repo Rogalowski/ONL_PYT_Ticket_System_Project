@@ -1,12 +1,15 @@
 from datetime import datetime
 
 from django.contrib.auth import logout, login, authenticate
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.shortcuts import render, redirect, get_object_or_404
 
 # Create your views here.
 from django.urls import reverse
+from django.utils.decorators import method_decorator
 from django.views import View
 from django.views.generic import UpdateView
 
@@ -121,7 +124,7 @@ class TicketList(View):
         return render(request, 'ticket_app/ticket_list_view.html', context)
 
 
-class TicketCreate(View):
+class TicketCreate(LoginRequiredMixin, View):
     def get(self, request):
         # MANUAL TICKET CREATION:
         # Manual ticket creation
@@ -215,10 +218,12 @@ class TicketView(View):
     def get(self, request, *args, **kwargs):
         ticket = Ticket.objects.get(id=kwargs['ticket_id'])
         corespondence = Correspondence.objects.filter(ticket_correspondence_id=ticket.pk)
+        user_details = request.user.username #DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDd
         context = {
             'ticket': ticket,
             'corespondence': corespondence,
             'form': TicketCorespondenceForm(),
+            'user_details': user_details,
                 }
         return render(request, 'ticket_app/ticket_view.html', context)
 
@@ -521,8 +526,8 @@ class UserLoginView(View):
 
 class UserLogoutView(View):
     def get(self, request, *args, **kwargs):
-            logout(request)
-            return redirect('home_index')
+        logout(request)
+        return redirect('home_index')
 
 
 #DO POPRAWY
@@ -545,3 +550,18 @@ class BaseView(View):
             }
             return render(request, 'base.html', context)
         return render(request, 'base.html', context)
+
+
+
+class UserDetailsView(LoginRequiredMixin, View):
+    def get(self, request, current_user):
+        print(f"current: {current_user}")
+        # logged_user = request.user.username
+        user_detail = User.objects.get(username=current_user)
+        # user = User.objects.all().filter(username=current_user)
+        print(f"Logged {user_detail} ")
+        context = {
+            'user_detail': user_detail,
+            'current_user': current_user,
+        }
+        return render(request, 'auth/user_details_view.html', context)

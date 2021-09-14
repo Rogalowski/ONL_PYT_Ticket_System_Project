@@ -21,6 +21,7 @@ Some  Block Content
 
         {% if user.is_authenticated %}
             Hi, logged as: <a href="{% url 'user_details' user.username  %} " > {{ user.username }} </a>
+            <br> MY SETTINGS
             <br> <a href="{% url 'user_logout_home' %}">Logout</a>
 
             <p> Tickets on you: {{  current_user_req_tickets.count}}

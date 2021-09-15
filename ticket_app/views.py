@@ -128,7 +128,6 @@ class TicketList(View):
 class TicketCreate(LoginRequiredMixin, View):
     def get(self, request):
         # MANUAL TICKET CREATION:
-        # Manual ticket creation
         # ticket_create = Ticket.objects.create(
         #     # ticket = Ticket(
         #     title='title2',
@@ -139,7 +138,7 @@ class TicketCreate(LoginRequiredMixin, View):
         #     problem_category_id=11,
         #     user_requestor_id=1,
         # )
-        # ticket_create.user_assignment.add(3) # dodaje do pola many to many gfg
+        # ticket_create.user_assignment.add(3) # dodaje do pola many to many
 
         context = {
             'form': TicketForm(),

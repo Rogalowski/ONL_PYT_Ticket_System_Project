@@ -58,12 +58,10 @@ def ticket(department_problem, department, user):
         user_requestor=user,
         # user_requestor=User.objects.get(username='jacek'),
     )
-    # ticket_create.user_assignment.add(1)
-
 
 
 @pytest.fixture
-def ticket_user_assignment(ticket):  # *args, **kwargs
+def ticket_user_assignment(ticket, user):  # *args, **kwargs
     # ticket = Ticket.objects.get(title='fake_title')
     # ticket = Ticket.objects.create(
     #     title='fake_title2',
@@ -82,7 +80,9 @@ def ticket_user_assignment(ticket):  # *args, **kwargs
     # user_assignment=User.objects.get(username='jacek').set(1),
     # Ticket.objects.create(ticket_id=1, user_id=1)
     # return ticket_usr_ass
-    return ticket.user_assignment.add(1)
+    user_assign_ticket = Ticket.objects.get(username='jacek')
+    return user_assign_ticket.user_assignment.add(user.id)
+
 
 
 @pytest.fixture

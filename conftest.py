@@ -1,6 +1,7 @@
 import pytest
 from django.utils import timezone
 
+from django.test import Client
 from ticket_app.models import Ticket, Department, User, Correspondence, DepartmentProblem
 
 
@@ -14,12 +15,11 @@ def department():
 
 
 @pytest.fixture
-def department_problem():
+def department_problem(department):
     return DepartmentProblem.objects.create(
-        department_id=1,
+        department=department,
         category_problem='Desktops/Software'
     )
-
 
 @pytest.fixture
 def user():
@@ -34,12 +34,17 @@ def user():
         date_joined=timezone.now(),
         address_city='Szczecin',
         phone_number='111222333',
-        department_id=1
     )
 
 
 @pytest.fixture
-def ticket():
+def client():
+    client = Client()
+    return client
+
+
+@pytest.fixture
+def ticket(department_problem, department, user):
     return Ticket.objects.create(
         title='fake_title1',
         description='fake_description1',
@@ -48,43 +53,40 @@ def ticket():
         date_creation=timezone.now(),
         date_update=timezone.now(),
         date_resolve=timezone.now(),
-        department_assignment_id=1,
-        problem_category_id=1,
-        ticket_user_requestor=1
-        # user_requestor_id=1,
+        department_assignment=department,
+        problem_category=department_problem,
+        user_requestor=user,
         # user_requestor=User.objects.get(username='jacek'),
-        # user_assignment=1,
     )
     # ticket_create.user_assignment.add(1)
 
 
 
 @pytest.fixture
-def ticket_user_assignment():
+def ticket_user_assignment(ticket):  # *args, **kwargs
     # ticket = Ticket.objects.get(title='fake_title')
-    ticket = Ticket.objects.create(
-        title='fake_title2',
-        description='fake_description2',
-        status='Not Acknowledged',
-        priorytet='Low',
-        date_creation=timezone.now(),
-        date_update=timezone.now(),
-        date_resolve=timezone.now(),
-        department_assignment_id=2,
-        problem_category_id=2,
-        user_requestor_id=2,
-        # user_assignment=1,
-    )
-
-    ticket_usr_ass = Ticket.objects.create(user_assignment=ticket.user_assignment.set(1))
+    # ticket = Ticket.objects.create(
+    #     title='fake_title2',
+    #     description='fake_description2',
+    #     status='Not Acknowledged',
+    #     priorytet='Low',
+    #     date_creation=timezone.now(),
+    #     date_update=timezone.now(),
+    #     date_resolve=timezone.now(),
+    #     department_assignment_id=2,
+    #     problem_category_id=2,
+    #     user_requestor_id=2,
+    #     # user_assignment=1,
+    # )
+    # ticket_usr_ass = Ticket.objects.create(user_assignment=ticket.user_assignment.set(1))
     # user_assignment=User.objects.get(username='jacek').set(1),
     # Ticket.objects.create(ticket_id=1, user_id=1)
     # return ticket_usr_ass
-    return ticket.user_assignment.set(1)
+    return ticket.user_assignment.add(1)
 
 
 @pytest.fixture
-def correspondence():
+def correspondence(ticket):
     return Correspondence.objects.create(
         user_id=1,
         description='Test Corespondence Description',

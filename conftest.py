@@ -61,35 +61,32 @@ def ticket(department_problem, department, user):
 
 
 @pytest.fixture
-def ticket_user_assignment(ticket, user):  # *args, **kwargs
-    # ticket = Ticket.objects.get(title='fake_title')
-    # ticket = Ticket.objects.create(
-    #     title='fake_title2',
-    #     description='fake_description2',
-    #     status='Not Acknowledged',
-    #     priorytet='Low',
-    #     date_creation=timezone.now(),
-    #     date_update=timezone.now(),
-    #     date_resolve=timezone.now(),
-    #     department_assignment_id=2,
-    #     problem_category_id=2,
-    #     user_requestor_id=2,
-    #     # user_assignment=1,
-    # )
-    # ticket_usr_ass = Ticket.objects.create(user_assignment=ticket.user_assignment.set(1))
-    # user_assignment=User.objects.get(username='jacek').set(1),
-    # Ticket.objects.create(ticket_id=1, user_id=1)
-    # return ticket_usr_ass
+def ticket_user_assignment(ticket, user, department_problem, department):  # *args, **kwargs
+    ticket = Ticket.objects.create(
+        title='fake_title1',
+        description='fake_description1',
+        status='Not Acknowledged',
+        priorytet='Low',
+        date_creation=timezone.now(),
+        date_update=timezone.now(),
+        date_resolve=timezone.now(),
+        department_assignment=department,
+        problem_category=department_problem,
+        user_requestor=user,
+        user_assignment=ticket.user_assignment.set(user),
+    )
+    ticket1 = ticket.user_assignment.set(user.id)
     user_assign_ticket = Ticket.objects.get(username='jacek')
-    return user_assign_ticket.user_assignment.add(user.id)
+    # return user_assign_ticket.user_assignment.add(user.id)
+    return ticket
 
 
 
 @pytest.fixture
-def correspondence(ticket):
+def correspondence(ticket, user):
     return Correspondence.objects.create(
-        user_id=1,
+        user=user,
         description='Test Corespondence Description',
         date_creation=timezone.now(),
-        ticket_correspondence_id=1,
+        ticket_correspondence=ticket,
     )

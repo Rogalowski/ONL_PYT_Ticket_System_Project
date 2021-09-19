@@ -12,9 +12,21 @@ from django.urls import reverse
 from django.utils.decorators import method_decorator
 from django.views import View
 from django.views.generic import UpdateView
-
+from contextlib import contextmanager
 from .models import Ticket, User, Correspondence
 from ticket_app.forms import TicketForm, TicketUpdateForm, TicketSearchForm, TicketCorespondenceForm, UserLoginForm
+
+
+
+
+#CONTEXT PROCESSOR
+def static_pages(request):
+    logged_user = request.user.username
+    return {
+        'static_pages1': Ticket.objects.filter(user_requestor__username=logged_user),
+        'static_pages2': Ticket.objects.filter(user_assignment__username=logged_user),
+        'request': request
+    }
 
 
 
@@ -30,31 +42,25 @@ class HomeView(View):
         pm_tickets = Ticket.objects.all().filter(department_assignment=4)
         fb_tickets = Ticket.objects.all().filter(department_assignment=5)
 
-        current_user_tickets = ''
         context = {
             'all_tickets': all_tickets,
             'it_tickets': it_tickets,
             'hr_tickets': hr_tickets,
             'pm_tickets': pm_tickets,
             'fb_tickets': fb_tickets,
-            'current_user_tickets': current_user_tickets,
         }
         if request.user.is_anonymous:
             pass
         else:
             logged_user = request.user.username
-            current_user_tickets = Ticket.objects.filter(user_requestor__username=logged_user)
-            current_user_req_tickets = Ticket.objects.filter(user_assignment__username=logged_user)
             print(logged_user)
-            print(current_user_req_tickets)
+
             context = {
                 'all_tickets': all_tickets,
                 'it_tickets': it_tickets,
                 'hr_tickets': hr_tickets,
                 'pm_tickets': pm_tickets,
                 'fb_tickets': fb_tickets,
-                'current_user_tickets': current_user_tickets,
-                'current_user_req_tickets': current_user_req_tickets,
             }
             return render(request, 'ticket_app/home_view.html', context)
         return render(request, 'ticket_app/home_view.html', context)

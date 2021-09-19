@@ -17,12 +17,5 @@
 <br>
       <h1> <a href="{% url 'ticket_create'  %} " >RAISE A TICKET </a>  </h1>
 
-                {% if user.is_authenticated %}
 
-            <p> Tickets on you: {{  current_user_req_tickets.count}}
-           <br> Requested tickets by you: {{ current_user_tickets.count }}
-            </p>
-                {% else %}
-   {{ current_user_tickets }}
-                {% endif %}
  {% endblock content %}

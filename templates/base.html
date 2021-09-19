@@ -15,6 +15,10 @@ Some  Block Content
 
 
 
+
+
+
+
 <footer>
 
 <h3>
@@ -23,7 +27,7 @@ Some  Block Content
             Hi, logged as: <a href="{% url 'user_details' user.username  %} " > {{ user.username }} </a>
             <br> MY SETTINGS
             <br> <a href="{% url 'user_logout_home' %}">Logout</a>
-
+{# CONTEXT PROCESOR#}
             <p> Tickets on you: {{  current_user_req_tickets.count}}
            <br> Requested tickets by you: {{ current_user_tickets.count }}
             </p>

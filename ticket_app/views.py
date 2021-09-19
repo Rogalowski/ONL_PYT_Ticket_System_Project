@@ -1,4 +1,3 @@
-from datetime import datetime
 
 from django.contrib.auth import logout, login, authenticate
 from django.contrib.auth.decorators import login_required
@@ -6,33 +5,15 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.shortcuts import render, redirect, get_object_or_404
-
-# Create your views here.
 from django.urls import reverse
-from django.utils.decorators import method_decorator
 from django.views import View
 from django.views.generic import UpdateView
-from contextlib import contextmanager
 from .models import Ticket, User, Correspondence
-from ticket_app.forms import TicketForm, TicketUpdateForm, TicketSearchForm, TicketCorespondenceForm, UserLoginForm
+from ticket_app.forms import TicketForm, TicketUpdateForm,\
+    TicketSearchForm, TicketCorespondenceForm, UserLoginForm
 
-
-
-
-#CONTEXT PROCESSOR
-def static_pages(request):
-    logged_user = request.user.username
-    return {
-        'static_pages1': Ticket.objects.filter(user_requestor__username=logged_user),
-        'static_pages2': Ticket.objects.filter(user_assignment__username=logged_user),
-        'request': request
-    }
-
-
-
-
-
-
+#  Main View of site. It shows department urls that redirect to department
+#  queue list of tickets
 class HomeView(View):
     def get(self, request):
         all_tickets = Ticket.objects.all()
@@ -67,7 +48,8 @@ class HomeView(View):
 
 
 
-
+# Views of queue tickets departments. Paginator added to scrolling tickets page by page.
+# Implemented search form for tickets in post method
 class TicketList(View):
     def get(self, request, department):
 
@@ -83,22 +65,19 @@ class TicketList(View):
         elif department == 'ALL':
             tickets = Ticket.objects.all()
 
-        paginator = Paginator(tickets, 6)  # wysw. liczbe wierszy na stronie
+        paginator = Paginator(tickets, 6)  # max number of objects on page
         page = request.GET.get('page')
         ticket_pages = paginator.get_page(page)
 
         context = {
-            # "tickets": tickets,
             "ticket_pages": ticket_pages,
             'department': department,
             'form': TicketSearchForm,
             'tickets': tickets,
         }
-        # ticket = Ticket.objects.get(pk=kwargs['ticket_id'])  # dzieki temu mozemy sie dostac w jinja (lista iterowalna) product_detail.categories.all
-
-        # categories = Category.objects.all() #NIE POTRZEBNE do kategorii mozemy sie odowlac przez pk=kwargs['product_id']) lub relacje
         return render(request, "ticket_app/ticket_list_view.html", context)
 
+    # Post method for search form. Search implemented by ticket title/status/user requester.
     def post(self, request, *args, **kwargs):
         form = TicketSearchForm(request.POST)
         context = {
@@ -107,30 +86,31 @@ class TicketList(View):
             'status': [],
         }
         if form.is_valid():
-            # logika biznezowa np. zapis do bazy
             typed_name = form.cleaned_data['title']
             typed_user = form.cleaned_data['user_requestor']
 
-            filter_ticket_title = {'title__icontains': typed_name}
-            filter_ticket_status = {'status__icontains': typed_name}
-            filter_ticket_requester = {'user_requestor__username__icontains': typed_user}
-            tickets = Ticket.objects.filter(Q(**filter_ticket_title) | Q(**filter_ticket_status) and Q(**filter_ticket_requester)).order_by('title').distinct()
+            filter_ticket_title = {'title__icontains': typed_name}  # filtering by typed title
+            filter_ticket_status = {'status__icontains': typed_name}  # filtering by typed status
+            filter_ticket_requester = {
+                'user_requestor__username__icontains': typed_user # filtering by typed user
+            }
+            tickets = Ticket.objects.filter(Q(**filter_ticket_title) |
+                                            Q(**filter_ticket_status) and
+                                            Q(**filter_ticket_requester)).order_by('title').distinct()
             # tickets2 = Ticket.objects.filter(user_requestor__username=typed_user)
             # tickets = Ticket.objects.filter(title__icontains=title)
             # status = Ticket.objects.filter(status__icontains=status)
 
-            paginator = Paginator(tickets, 3)  # wysw. liczbe wierszy na stronie
+            paginator = Paginator(tickets, 6)  # max number of objects on page
             page = request.GET.get('page')
             ticket_pages = paginator.get_page(page)
 
-            # context['tickets'] = tickets
             context['ticket_pages'] = ticket_pages
-
-            # context['status'] = status
-
         return render(request, 'ticket_app/ticket_list_view.html', context)
 
 
+# Designed View for New Ticket Creation
+# Anonymous users will be automatically redirect to log in view
 class TicketCreate(LoginRequiredMixin, View):
     def get(self, request):
         # MANUAL TICKET CREATION:
@@ -151,16 +131,16 @@ class TicketCreate(LoginRequiredMixin, View):
         }
         return render(request, 'ticket_app/ticket_create_view.html', context)
 
+    # Post method for sent post request and save on database
     def post(self, request):
         form = TicketForm(request.POST)
         context = {
             'form': form,
         }
         if form.is_valid():
-            title = form.cleaned_data['title']
+            title = form.cleaned_data['title']  # get provided title by user from form
             description = form.cleaned_data['description']
-            print(f"Choosen: {title}")
-            # status = form.cleaned_data['status']
+            print(f"Choosen: {title}")  # Test get title from form, etc below
             priorytet = form.cleaned_data['priorytet']
             print(f"Choosen: {priorytet}")
             department_assignment = form.cleaned_data['department_assignment']
@@ -169,57 +149,49 @@ class TicketCreate(LoginRequiredMixin, View):
             print(f"Choosen problem: {problem_category}")
             user_requestor = form.cleaned_data['user_requestor']
             print(f"Choosen user req: {user_requestor}")
-            # user_assignment = form.cleaned_data['user_assignment']
-            # print(f"Choosen user ass: {user_assignment }")
-            # date_creation = form.cleaned_data['date_creation']
-            # date_update = form.cleaned_data['date_update']
-            # date_resolve = form.cleaned_data['date_resolve']
-            print('CHECK')
-            # print(*user_assignment.filter(department=department_assignment))
-            print(problem_category.department.name_department)
-            print(department_assignment.name_department)
 
-            # check if Department choose is the same  department from problem category. If not it will show error
-            # Problem Categroy from other department assignment is prohibet
+
+            # Check if chosen Department is the same as department from problem category:
+            # If not, will show error. Problem Categroy from other department assignment is prohibet
             if department_assignment.name_department == problem_category.department.name_department:
-
                 # ticket = Ticket.objects.create(**form.cleaned_data)
                 ticket_create = Ticket.objects.create(
-                # ticket = Ticket(
                     title=title,
                     description=description,
-                    # status=status,
+                    # status=status,        Status should be default on creation new ticket
                     priorytet=priorytet,
                     department_assignment=department_assignment,
                     problem_category=problem_category,
                     user_requestor=user_requestor,
-                    # date_creation=date_creation,
-                    # date_update=date_update,
-                    # date_resolve=date_resolve,
                 )
-                # Will add all selected users_assignet to tt from selected department (other users will missed)
-                # ticket_create.user_assignment.add(*user_assignment.filter(department=department_assignment))
+
+                # Will add all selected users_assigned to tt from selected department
+                # (other users will be missed)
+                # ticket_create.user_assignment.add(
+                #     *user_assignment.filter(department=department_assignment)
+                #     )
 
                 # Will add all users_assign to tt from selected department
-                ticket_create.user_assignment.add(*User.objects.filter(department_id=department_assignment.pk))
+                ticket_create.user_assignment.add(
+                    *User.objects.filter(department_id=department_assignment.pk)
+                )
                 return redirect('ticket_list', 'ALL')
             else:
                 context = {
                     'form': form,
-                    'result': f"ASSIGNED DEPT SHOULD HAVE SAME DEPT PROBLEM"
+                    'result': f"ASSIGNED DEPARTMENT SHOULD HAVE ASSIGNED SAME DEPARTMENT OF PROBLEM"
                 }
                 return render(request, 'ticket_app/ticket_create_view.html', context)
 
         context = {
             'form': form,
-            'result': f"SOMETHING GOES WRONG"
+            'result': f"FORM CRUSHED, TRY ONE MORE TIME"
         }
         return render(request, 'ticket_app/ticket_create_view.html', context)
-        # return redirect('home_index')
-            # return render(request, 'ticket_app/home_view.html', context)
-            # return redirect('tickets', ticket_id=Ticket.objects.all().get(id=ticket_id)
 
 
+# View details of ticket, with correspondence list on each ticket
+# and correspondence form to add new comments
 class TicketView(View):
     def get(self, request, *args, **kwargs):
         ticket = Ticket.objects.get(id=kwargs['ticket_id'])
@@ -228,39 +200,34 @@ class TicketView(View):
             'ticket': ticket,
             'corespondence': corespondence,
             'form': TicketCorespondenceForm(),
-
                 }
         return render(request, 'ticket_app/ticket_view.html', context)
 
+    # Post method for correspondence form, to add new correspondence/comments.
+    # For anonymous users, has hidden form on HTML side
     def post(self, request, *args, **kwargs):
         form = TicketCorespondenceForm(request.POST)
-
-
         if form.is_valid():
             logged_user = User.objects.get(username=request.user.username)
-            # user = form.cleaned_data['user']
+            # user = form.cleaned_data['user']  # requestor of correspondence should be logged
             description = form.cleaned_data['description']
-
-            # print(f"Choosen: {user}")
-            print(f"Choosen: {description}")
-            print(Ticket.objects.get(id=kwargs['ticket_id']))
 
             ticket_correspondence = Ticket.objects.get(id=kwargs['ticket_id'])
             Correspondence.objects.create(
-                user=logged_user,  #user
+                user=logged_user,  # logged user will be assigned
                 description=description,
                 ticket_correspondence_id=ticket_correspondence.pk
             )
             return redirect('ticket', ticket_correspondence.pk)
-            # return render(request, 'ticket_app/ticket_create_view.html', context)
-
         context = {
             'form': form,
-            'result': f"SOMETHING GOES WRONG"
+            'result': f"FORM CRUSHED, PLEASE TRY ONE MORE TIME"
         }
         return render(request, 'ticket_app/ticket_corespon_create_view.html', context)
 
 
+# Ticket Edit view that require Logged user.
+# Anonymous users will be automatically redirect to log in view
 class TicketEditView(LoginRequiredMixin, UpdateView):
     template_name = 'ticket_app/ticket_create_view.html'
     # form_class = ProductForm
@@ -277,12 +244,14 @@ class TicketEditView(LoginRequiredMixin, UpdateView):
     ]  # wybrane pola
     model = Ticket
 
-    def get_object(self, queryset=None):  # pobranie url_id z urls.py na zmineinaym modelu Notice w ID
+    # Will try get cuurent object by id. If not, will show E404
+    def get_object(self, queryset=None):
         id_ = self.kwargs.get("ticket_id")
         return get_object_or_404(Ticket, id=id_)
 
+    # Success url will redirect after success edit
     def get_success_url(self):
-        return reverse('ticket_list') # , kwargs=['ticket_id']
+        return reverse('ticket_list')  # , kwargs=['ticket_id']
 
     def post(self, request, *args, **kwargs):
         form = TicketUpdateForm(request.POST)
@@ -301,19 +270,13 @@ class TicketEditView(LoginRequiredMixin, UpdateView):
             user_requestor = form.cleaned_data['user_requestor']
             print(f"Choosen user req: {user_requestor}")
             user_assignment = form.cleaned_data['user_assignment']
-            # user_assignment = request.POST.get('user_assignment')
-            # user_assignment = request.POST.getlist('user_assignment')
-            print(f"Choosen user ass: {user_assignment }")
-            # date_creation = form.cleaned_data['date_creation']
-            # date_update = form.cleaned_data['date_update']
-            # date_resolve = form.cleaned_data['date_resolve']
-            print('CHECK')
-            # print(*user_assignment.filter(department=department_assignment))
+
             print(problem_category.department.name_department)
             print(department_assignment.name_department)
 
-            # check if Department choose is the same  department from problem category. If not it will show error
-            # Problem Categroy from other department assignment is prohibet
+            # Check if Department choose is the same  department from problem category.
+            # If not it will show error
+            # Problem Category from other department assignment is prohibet
             if department_assignment.name_department == problem_category.department.name_department:
 
                 # ticket = Ticket.objects.create(**form.cleaned_data)
@@ -334,6 +297,7 @@ class TicketEditView(LoginRequiredMixin, UpdateView):
                 # # ticket_update.user_assignment.add(*user_assignment)
                 # ticket_update.user_assignment.add(*user_assignment.filter(department=department_assignment))
 
+                # Ticket update fields
                 ticket_update = Ticket.objects.get(id=kwargs['ticket_id'])
                 ticket_update.title = title
                 ticket_update.description = description
@@ -343,24 +307,79 @@ class TicketEditView(LoginRequiredMixin, UpdateView):
                 ticket_update.problem_category = problem_category
                 ticket_update.user_requestor = user_requestor
 
+                # Ticket save updated fields to database
                 ticket_update.save()
-                ticket_update.user_assignment.set(user_assignment.filter(department=department_assignment))
-
+                # user_assignment.set - will clear old entries and add selected
+                ticket_update.user_assignment.set(
+                    user_assignment.filter(department=department_assignment)
+                )
                 # ticket_update.user_assignment.clear()
-                # ticket_update.user_assignment.add(*user_assignment.filter(department=department_assignment))
+                # ticket_update.user_assignment.add(
+                #     *user_assignment.filter(department=department_assignment)
+                # )
                 return redirect('ticket_list', 'ALL')
             else:
                 context = {
                     'form': form,
-                    'result': f"ASSIGNED DEPT SHOULD HAVE SAME DEPT PROBLEM"
+                    'result': f"ASSIGNED DEPARTMENT SHOULD HAVE ASSIGNED SAME DEPARTMENT OF PROBLEM"
                 }
                 return render(request, 'ticket_app/ticket_create_view.html', context)
 
         context = {
             'form': form,
-            'result': f"SOMETHING GOES WRONG"
+            'result': f"FORM CRUSHED, TRY ONE MORE TIME"
         }
         return render(request, 'ticket_app/ticket_create_view.html', context)
+
+
+# User login form view
+class UserLoginView(View):
+    def get(self, request, *args, **kwargs):
+        form = UserLoginForm()
+        return render(request, 'auth/login_user_view.html', {
+        'form': form
+        })
+
+    # post method for login, needed correct username and password
+    def post(self, request, *args, **kwargs):
+        form = UserLoginForm(request.POST)
+
+        if form.is_valid():
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password']
+            user = authenticate(username=username, password=password)
+
+            # if user typed correct passes will redirect to home view
+            # if not will ask for try one more time
+            if user is not None:
+                login(request, user)
+                return redirect('home_index')
+            else:
+                wrong_passes = "Wrong login or password! Try again!"
+                context = {
+                    'form': form,
+                    'wrong_passes': wrong_passes,
+                }
+                return render(request, 'auth/login_user_view.html', context)
+
+# Logout view
+class UserLogoutView(View):
+    def get(self, request, *args, **kwargs):
+        logout(request)
+        return redirect('home_index')
+
+
+# User details view, need Logged user
+class UserDetailsView(LoginRequiredMixin, View):
+    def get(self, request, current_user):
+        print(f"current: {current_user}")
+        user_detail = User.objects.get(username=current_user)
+        print(f"Logged {user_detail} ")
+        context = {
+            'user_detail': user_detail,
+            'current_user': current_user,
+        }
+        return render(request, 'auth/user_details_view.html', context)
 
 
 #
@@ -499,76 +518,3 @@ class TicketEditView(LoginRequiredMixin, UpdateView):
 #             'result': f"SOMETHING GOES WRONG"
 #         }
 #         return render(request, 'ticket_app/ticket_corespon_create_view.html', context)
-
-
-class UserLoginView(View):
-    def get(self, request, *args, **kwargs):
-        form = UserLoginForm()
-        return render(request, 'auth/login_user_view.html', {
-        'form': form
-
-    })
-    def post(self, request, *args, **kwargs):
-        form = UserLoginForm(request.POST)
-
-        if form.is_valid():
-
-            username = form.cleaned_data['username']
-            password = form.cleaned_data['password']
-            user = authenticate(username=username, password=password)
-
-            if user is not None:
-                login(request, user)
-                return redirect('home_index')
-                # return HttpResponseRedirect(reverse('products'))
-
-            else:
-                wrong_passes = "Wrong login or password!"
-                context = {
-                    'form': form,
-                    'wrong_passes': wrong_passes,
-                }
-                return render(request, 'auth/login_user_view.html', context)
-
-
-class UserLogoutView(View):
-    def get(self, request, *args, **kwargs):
-        logout(request)
-        return redirect('home_index')
-
-
-#DO POPRAWY
-class BaseView(View):
-    def get(self, request):
-        current_user_tickets = ''
-        context = {
-            'current_user_tickets': current_user_tickets,
-        }
-        if request.user.is_anonymous:
-            pass
-        else:
-            logged_user = request.user.username
-            current_user_tickets = Ticket.objects.filter(user_requestor__username=logged_user)
-            current_user_req_tickets = Ticket.objects.filter(user_assignment__username=logged_user)
-
-            context = {
-                'current_user_tickets': current_user_tickets,
-                'current_user_req_tickets': current_user_req_tickets,
-            }
-            return render(request, 'base.html', context)
-        return render(request, 'base.html', context)
-
-
-
-class UserDetailsView(LoginRequiredMixin, View):
-    def get(self, request, current_user):
-        print(f"current: {current_user}")
-        # logged_user = request.user.username
-        user_detail = User.objects.get(username=current_user)
-        # user = User.objects.all().filter(username=current_user)
-        print(f"Logged {user_detail} ")
-        context = {
-            'user_detail': user_detail,
-            'current_user': current_user,
-        }
-        return render(request, 'auth/user_details_view.html', context)

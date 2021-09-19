@@ -5,7 +5,7 @@ from django.test import Client
 from ticket_app.models import Ticket, Department, User, Correspondence, DepartmentProblem
 
 
-#Plik conftest fixtury - globalnie widoczne wszedzie
+# Fixtures that create tests objects in models
 @pytest.fixture
 def department():
     return Department.objects.create(

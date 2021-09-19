@@ -1,16 +1,5 @@
 from django.db import models
 from django.contrib.auth.models import PermissionsMixin, AbstractUser
-from django.utils import timezone
-
-# STATUS_STATE = (
-#     ('Schedule', 'Schedule'),  # pending
-#
-#     ('Successfull', 'Successfull'), # Resolved
-#     ('Not Successfull', 'Not Successfull'),
-# )
-# class StatusState(models.Model):
-#     name_reason_stat = models.CharField(max_length=64)
-#     # name_reason_stat = models.CharField(choices=STATUS_STATE, max_length=64)
 
 
 STATUS = (
@@ -62,16 +51,11 @@ CATEGORY_PROBLEM = (
 )
 
 
-# class Status(models.Model):
-#     name_status = models.CharField(choices=STATUS, max_length=64)
-# status_statement = models.OneToOneField(StatusState, on_delete=models.CASCADE)
-# status_statement = models.CharField(choices=CATEGORY_PROBLEM, max_length=64)
-
-
 class Department(models.Model):
     name_department = models.CharField(max_length=64)
     desc_department = models.CharField(max_length=255)
 
+    # Add description of object
     def __str__(self):
         return self.name_department
 
@@ -80,18 +64,13 @@ class DepartmentProblem(models.Model):
     department = models.ForeignKey(Department, on_delete=models.CASCADE)
     category_problem = models.CharField(choices=CATEGORY_PROBLEM, max_length=64)
 
-    # type_dept_problem = models.OneToOneField(TypeDeptProblem) #opcjonalnie kiedys
-
+    # Another description set for object
     def __str__(self):
         self.dept_and_problem = f'{self.department} :: {self.category_problem}'
         return self.dept_and_problem
 
 
-# class TypeDeptProblem(models.Model): #opcjonalnie kiedys
-#     name_problem = models.CharField(choices=TYPE_PROBLEM, max_length=64)
-#     name_problem = models.OneToOneField(DepartmentProblems)
-
-
+# User model Inheritanced from Abstract User that have build in commented entries
 class User(AbstractUser):
     # username = models.CharField()
     # first_name = models.CharField(_('first name'), max_length=150, blank=True)
@@ -106,23 +85,21 @@ class User(AbstractUser):
 
     def __str__(self):
         self.name_and_dept = f'{self.username} from {self.department} Department'
-        # return self.username
         return self.name_and_dept
 
 
-# TO DO
+# TO DO, should add every date time and description changes of ticket. Each changes.
 class HistoryTicket(models.Model):
     description = models.CharField(max_length=255)
     date_creation = models.DateTimeField(auto_now_add=True)
 
 
+# Ticket model
 class Ticket(models.Model):
     title = models.CharField(max_length=64)
     description = models.TextField(max_length=1000)
     status = models.CharField(choices=STATUS, max_length=64, default='Not Acknowledged')
     priorytet = models.CharField(choices=PRIORITY, max_length=64, default=1)
-    # date_creation = models.DateTimeField(auto_now_add=True, blank=True, null=True )
-    # date_creation = models.DateTimeField(default=timezone.now(), blank=True)
     date_creation = models.DateTimeField(auto_now_add=True, blank=True, null=True)
     date_update = models.DateTimeField(auto_now=True)
     date_resolve = models.DateTimeField(auto_now_add=False, blank=True, null=True)
@@ -130,10 +107,8 @@ class Ticket(models.Model):
     problem_category = models.ForeignKey(DepartmentProblem, on_delete=models.CASCADE, default='',
                                          related_name="ticket_problem_category")
     user_requestor = models.ForeignKey(User, on_delete=models.CASCADE,
-                                       related_name="ticket_user_requestor")  # CZY MOZE USER? #cały dział czy osoby lub osoba
+                                       related_name="ticket_user_requestor")
     user_assignment = models.ManyToManyField(User)
-    # file_path = models.FilePathField()
-    # history_tt = models.ManyToManyField(HistoryTicket, on_delete=models.CASCADE)  # osobna tabela do tego? ma zbierac zmiany w tt typu status, korespondencja, categoria przez kogo zostala utworzona zmiana
 
 
 class Correspondence(models.Model):
@@ -141,4 +116,4 @@ class Correspondence(models.Model):
     description = models.CharField(max_length=1000)
     date_creation = models.DateTimeField(auto_now_add=True)
     ticket_correspondence = models.ForeignKey(Ticket, related_name="ticket_correspondence",
-                                              on_delete=models.CASCADE, default='')  # ''?
+                                              on_delete=models.CASCADE, default='')

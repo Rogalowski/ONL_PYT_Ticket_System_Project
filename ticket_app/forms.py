@@ -16,7 +16,7 @@ class TicketForm(ModelForm):
             'priorytet',
             'department_assignment',
             'problem_category',
-            'user_requestor',  # TO DO user requestor should be logged user
+            # 'user_requestor',  # TO DO user requestor should be logged user
             # 'user_assignment',  Automatically set for logged user in class View
         )
         widgets = {'status': forms.HiddenInput()}  # hidden as have default set

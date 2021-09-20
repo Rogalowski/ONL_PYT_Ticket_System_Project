@@ -1,3 +1,4 @@
+import datetime
 
 from django.contrib.auth import logout, login, authenticate
 from django.contrib.auth.decorators import login_required
@@ -18,10 +19,11 @@ class HomeView(View):
     def get(self, request):
         all_tickets = Ticket.objects.all()
         #count available ticket on each department
-        it_tickets = Ticket.objects.all().filter(department_assignment=2)
-        hr_tickets = Ticket.objects.all().filter(department_assignment=3)
-        pm_tickets = Ticket.objects.all().filter(department_assignment=4)
-        fb_tickets = Ticket.objects.all().filter(department_assignment=5)
+        exclude_list = ['Resolved Successfull', 'Dropped']
+        it_tickets = Ticket.objects.all().filter(department_assignment=2).exclude(status__in=exclude_list)
+        hr_tickets = Ticket.objects.all().filter(department_assignment=3).exclude(status__in=exclude_list)
+        pm_tickets = Ticket.objects.all().filter(department_assignment=4).exclude(status__in=exclude_list)
+        fb_tickets = Ticket.objects.all().filter(department_assignment=5).exclude(status__in=exclude_list)
 
         context = {
             'all_tickets': all_tickets,
@@ -53,15 +55,17 @@ class HomeView(View):
 class TicketList(View):
     def get(self, request, department):
 
+        exclude_list = ['Resolved Successfull', 'Dropped']
+        # .exclude(name__in=exclude_list)
         global tickets
         if department == "IT":
-            tickets = Ticket.objects.all().filter(department_assignment=2).exclude(status='Resolved Successfull')
+            tickets = Ticket.objects.all().filter(department_assignment=2).exclude(status__in=exclude_list)
         elif department == "HR":
-            tickets = Ticket.objects.all().filter(department_assignment=3).exclude(status='Resolved Successfull')
+            tickets = Ticket.objects.all().filter(department_assignment=3).exclude(status__in=exclude_list)
         elif department == "PM":
-            tickets = Ticket.objects.all().filter(department_assignment=4).exclude(status='Resolved Successfull')
+            tickets = Ticket.objects.all().filter(department_assignment=4).exclude(status__in=exclude_list)
         elif department == "FB":
-            tickets = Ticket.objects.all().filter(department_assignment=5).exclude(status='Resolved Successfull')
+            tickets = Ticket.objects.all().filter(department_assignment=5).exclude(status__in=exclude_list)
         elif department == 'ALL':
             tickets = Ticket.objects.all()
 
@@ -147,10 +151,9 @@ class TicketCreate(LoginRequiredMixin, View):
             print(f"Choosen department: {department_assignment}")
             problem_category = form.cleaned_data['problem_category']
             print(f"Choosen problem: {problem_category}")
-            user_requestor = form.cleaned_data['user_requestor']
-            print(f"Choosen user req: {user_requestor}")
 
 
+            logged_user = User.objects.get(username=request.user.username)
             # Check if chosen Department is the same as department from problem category:
             # If not, will show error. Problem Categroy from other department assignment is prohibet
             if department_assignment.name_department == problem_category.department.name_department:
@@ -162,7 +165,7 @@ class TicketCreate(LoginRequiredMixin, View):
                     priorytet=priorytet,
                     department_assignment=department_assignment,
                     problem_category=problem_category,
-                    user_requestor=user_requestor,
+                    user_requestor=logged_user,
                 )
 
                 # Will add all selected users_assigned to tt from selected department
@@ -306,7 +309,8 @@ class TicketEditView(LoginRequiredMixin, UpdateView):
                 ticket_update.department_assignment = department_assignment
                 ticket_update.problem_category = problem_category
                 ticket_update.user_requestor = user_requestor
-
+                if status == "Dropped" or 'Resolved Successfull':
+                    ticket_update.date_resolve = datetime.datetime.now()
                 # Ticket save updated fields to database
                 ticket_update.save()
                 # user_assignment.set - will clear old entries and add selected

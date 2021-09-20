@@ -1,10 +1,9 @@
-
 {% extends 'base.html' %}
 
-
 {% block content %}
-    <h3>LOGIN FORM</h3>
+    <b><a href="{{request.META.HTTP_REFERER}}">Go back</a> </b>
     {% include 'base_form.html' with form=form %}
-{{ wrong_passes }} {{ correct_passes }}
+    <br>
+{{ result }}
 
 {% endblock %}

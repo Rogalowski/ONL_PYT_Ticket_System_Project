@@ -1,6 +1,8 @@
+from django.contrib.auth.hashers import make_password
+from django.core.exceptions import ValidationError
 from django.forms import ModelForm
 from django import forms
-from ticket_app.models import Ticket,  Correspondence
+from ticket_app.models import Ticket, Correspondence, User
 from django.forms import ModelForm
 
 
@@ -71,3 +73,33 @@ class TicketCorespondenceForm(ModelForm):
 class UserLoginForm(forms.Form):
     username = forms.CharField(required=True)
     password = forms.CharField(widget=forms.PasswordInput(), required=True)
+
+
+# Logged user settings Form
+# class UserSettingsForm(ModelForm):
+#     class Meta:
+#         model = User
+#         fields = (
+#             'username',
+#             'password',
+#             'first_name',
+#             'last_name',
+#             'email',
+#             'address_city',
+#             'phone_number',
+#         )
+
+# def username_validator(username):
+#     if User.objects.filter(username=username).exists():
+# raise ValidationError('Username already exist', code='invalid')
+class UserSettingsForm(forms.Form):
+    # username = forms.CharField(validators=[username_validator], required=True)
+    username = forms.CharField(required=True)
+    password1 = forms.CharField(widget=forms.PasswordInput(), required=True)
+    # password2 = forms.CharField(widget=forms.PasswordInput(), required=True)
+    first_name = forms.CharField(required=True)
+    last_name = forms.CharField(required=True)
+    email = forms.EmailField(required=True)
+    address_city = forms.CharField(max_length=64)
+    phone_number = forms.IntegerField()
+

@@ -3,7 +3,7 @@
 {% block content %}
     <b><a href="{{request.META.HTTP_REFERER}}">Go back</a> </b>
 
-    <h1>Details of: {{ user_detail.username }}</h1>
+    <h1>{{ settings }} Details of: {{ user_detail.username }}</h1>
     <h2> Department: {{ user_detail.department }} </h2>
     <h4>
         <li> First Name: {{ user_detail.first_name }}</li>

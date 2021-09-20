@@ -2,6 +2,7 @@ import datetime
 
 from django.contrib.auth import logout, login, authenticate
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.hashers import make_password
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator
 from django.db.models import Q
@@ -10,8 +11,9 @@ from django.urls import reverse
 from django.views import View
 from django.views.generic import UpdateView
 from .models import Ticket, User, Correspondence
-from ticket_app.forms import TicketForm, TicketUpdateForm,\
-    TicketSearchForm, TicketCorespondenceForm, UserLoginForm
+from ticket_app.forms import TicketForm, TicketUpdateForm, \
+    TicketSearchForm, TicketCorespondenceForm, UserLoginForm, UserSettingsForm
+
 
 #  Main View of site. It shows department urls that redirect to department
 #  queue list of tickets
@@ -386,6 +388,72 @@ class UserDetailsView(LoginRequiredMixin, View):
         return render(request, 'auth/user_details_view.html', context)
 
 
+# Logged user settings form edit view, need Logged user.
+# Will check if user from url is equal as logged to make sure chage of logged user settings
+class UserSettingsEditView(LoginRequiredMixin, View):
+    def get(self, request, current_user):
+
+        logged_user = User.objects.get(username=request.user.username)
+        print(f'Current: {current_user}')
+        print(f'Logged: {logged_user}')
+        if logged_user.username == current_user:
+            user_detail = User.objects.filter(username=current_user).values()[0]
+            context = {
+                'form': UserSettingsForm(user_detail),
+                'current_user': current_user,
+            }
+            return render(request, 'auth/user_create_view.html', context)
+        else:
+            context = {
+                'form': UserLoginForm,
+                'wrong_passes': 'IF YOU WANT CHANGE SETTINGS ANOTHER USER, PLEASE LOGIN FIRST',
+            }
+            return render(request, 'auth/login_user_view.html', context)
+
+    def post(self, request, current_user):
+        form = UserSettingsForm(request.POST)
+
+        if form.is_valid():
+            username = form.cleaned_data['username']
+            password1 = make_password(form.cleaned_data['password1'])
+            # password2 = make_password(form.cleaned_data['password2'])
+            first_name = form.cleaned_data['first_name']
+            last_name = form.cleaned_data['last_name']
+            email = form.cleaned_data['email']
+            address_city = form.cleaned_data['address_city']
+            phone_number = form.cleaned_data['phone_number']
+            # user = authenticate(username=username, password=password)
+
+            user_update = User.objects.get(username=current_user)
+            # if user_update.check_password(password1) != password1:
+            #     print(f'{user_update.check_password(password1)}')
+            #     print(f'TO SAMO HASLO, NIE ZAPISALEM DO BAZY')
+            #     return redirect('user_edit_settings', current_user)
+            # else:
+            user_update.password = password1
+
+            user_update.username = username
+            user_update.first_name = first_name
+            user_update.last_name = last_name
+            user_update.email = email
+            user_update.address_city = address_city
+            user_update.phone_number = phone_number
+
+            user_update.save()
+            print('ZAPISANO')
+            # if user typed correct passes will redirect to home view
+            # if not will ask for try one more time
+            # if user is not None:
+            #     login(request, user)
+            #     return redirect('home_index')
+            # else:
+            #     wrong_passes = "Wrong login or password! Try again!"
+            #     context = {
+            #         'form': form,
+            #         'wrong_passes': wrong_passes,
+            #     }
+            #     return render(request, 'auth/login_user_view.html', context)
+            return redirect('user_logout_home')
 #
 # #MOZNA USUNAC, PRAWIDLOWY TICKET EDIT VIEW2
 # class TicketEditView(View):
@@ -488,37 +556,3 @@ class UserDetailsView(LoginRequiredMixin, View):
 #             'result': f"SOMETHING GOES WRONG"
 #         }
 #         return render(request, 'ticket_app/ticket_create_view.html', context)
-
-# SEPERATED CORESPONDENCE CREATION VIEW
-# class TicketCorespondenceCreate(View):
-#     def get(self, request, *args, **kwargs):
-#         context = {
-#             'form': TicketCorespondenceForm(),
-#         }
-#         return render(request, 'ticket_app/ticket_corespon_create_view.html', context)
-#
-#     def post(self, request, *args, **kwargs):
-#         form = TicketCorespondenceForm(request.POST)
-#
-#         if form.is_valid():
-#             user = form.cleaned_data['user']
-#             description = form.cleaned_data['description']
-#
-#             print(f"Choosen: {user}")
-#             print(f"Choosen: {description}")
-#             print(Ticket.objects.get(id=kwargs['ticket_id']))
-#
-#             ticket_correspondence = Ticket.objects.get(id=kwargs['ticket_id'])
-#             Correspondence.objects.create(
-#                 user=user,
-#                 description=description,
-#                 ticket_correspondence_id=ticket_correspondence.pk
-#             )
-#             return redirect('ticket', ticket_correspondence.pk)
-#             # return render(request, 'ticket_app/ticket_create_view.html', context)
-#
-#         context = {
-#             'form': form,
-#             'result': f"SOMETHING GOES WRONG"
-#         }
-#         return render(request, 'ticket_app/ticket_corespon_create_view.html', context)

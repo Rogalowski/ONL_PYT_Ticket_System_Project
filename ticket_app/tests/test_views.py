@@ -32,12 +32,12 @@ def test_ticket_model(ticket):
 
 
 @pytest.mark.django_db
-def test_ticket_user_assignment_model(ticket, user):
+def test_ticket_user_assignment_model(ticket, user, ticket_user_assignment):
     assert len(Ticket.objects.all()) >= 1
     assert Ticket.objects.all().get(title='fake_title1') == ticket
     assert Ticket.objects.get(user_requestor=user) == ticket
     # breakpoint()
-    # assert Ticket.objects.get(user_assignment=user) == ticket_user_assignment
+    assert Ticket.objects.get(user_assignment=user).id == ticket.id
 
 
 
@@ -125,52 +125,34 @@ def test_ticket_list(client, ticket, department, department_problem,  user):  # 
 
 
 @pytest.mark.django_db
-def test_ticket_details(client, ticket, user, department, department_problem, correspondence):
+def test_ticket_details(client, ticket, user, department, department_problem, correspondence, ticket_user_assignment):
     # client.force_login(user=user)
 
-    response = client.get(f'/ticket/{ticket.id}/', {})  #, {'id': '1'}
-    # assert response.status_code == 200
+    response = client.get(reverse('ticket', args=[ticket.id]))
+    assert response.status_code == 200
     # assert len(response.context['title']) == 1
     # breakpoint()
     # assert response.status_code == 200
     for field in (
         'title',
-        # 'description',
-        # 'status',
-        # 'priorytet',
-        # 'date_creation',
-        # 'date_update',
-        # 'date_resolve',
-        # 'department_assignment',
-        # 'problem_category',
-        # 'user_requestor',
-        # 'ticket_correspondence',
-        # 'user_assignment',
+        'description',
+        'status',
+        'priorytet',
+        'date_creation',
+        'date_update',
+        'date_resolve',
+        'department_assignment',
+        'problem_category',
+        'user_requestor',
+        'ticket_correspondence',
+        'user_assignment',
     ):
         # assert response.resolver_match.func.__name__, TicketView.as_view().__name__
         assert Ticket.objects.count() >= 1
+        assert getattr(response.context['ticket'], field) == getattr(ticket, field)
         # assert response.context[field] == getattr(ticket, field)
         # assert field in response.data
         # assert Ticket.objects.count() == len(response.data)
-
-
-
-    # for name_ctx in [
-    #     'title',
-    #     'description',
-    #     'status',
-    #     'priorytet',
-    #     'date_creation',
-    #     'date_update',
-    #     'date_resolve',
-    #     'department_assignment',
-    #     'problem_category',
-    #     'user_requestor',
-    #     # 'user_assignment',
-    # ]:
-    #     print(f'AAAAAAAAAAAAAAA {name_ctx}')
-    #     assert response.context[name_ctx] == getattr(ticket, name_ctx)
-
 
 
 
@@ -180,12 +162,11 @@ def test_ticket_edit(client, ticket, user, department, department_problem, corre
     # client.login(username='jacek', password='jacek')
     client.force_login(user=user)
 
-
-
-    breakpoint()
-    response = client.get(f"/ticket/{ticket.id}/", {})
-    breakpoint()
-    ticket_data = response.data
+    # breakpoint()
+    # response = client.get(f"/ticket/{ticket.id}/", {})
+    # breakpoint()
+    response = client.post(reverse('ticket', args=[ticket.id]))
+    ticket_data = response
     ticket_data["title"] = 'Edited_Title'
 
     response = client.patch(f"/ticket/{ticket.id}/", ticket_data)

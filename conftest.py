@@ -61,22 +61,21 @@ def ticket(department_problem, department, user):
 
 
 @pytest.fixture
-def ticket_user_assignment(ticket, user, department_problem, department):  # *args, **kwargs
-    ticket = Ticket.objects.create(
-        title='fake_title1',
-        description='fake_description1',
-        status='Not Acknowledged',
-        priorytet='Low',
-        date_creation=timezone.now(),
-        date_update=timezone.now(),
-        date_resolve=timezone.now(),
-        department_assignment=department,
-        problem_category=department_problem,
-        user_requestor=user,
-        user_assignment=ticket.user_assignment.set(user),
-    )
-    ticket1 = ticket.user_assignment.set(user.id)
-    user_assign_ticket = Ticket.objects.get(username='jacek')
+def ticket_user_assignment(ticket, user):  # *args, **kwargs
+    # ticket = Ticket.objects.create(
+    #     title='fake_title1',
+    #     description='fake_description1',
+    #     status='Not Acknowledged',
+    #     priorytet='Low',
+    #     date_creation=timezone.now(),
+    #     date_update=timezone.now(),
+    #     date_resolve=timezone.now(),
+    #     department_assignment=department,
+    #     problem_category=department_problem,
+    #     user_requestor=user,
+    # )
+    ticket.user_assignment.add(user)
+    # user_assign_ticket = Ticket.objects.get(username='jacek')
     # return user_assign_ticket.user_assignment.add(user.id)
     return ticket
 

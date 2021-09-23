@@ -41,10 +41,10 @@
 
 <h3>  <a href="{% url 'ticket_edit' ticket.id %} " > EDIT TICKET </a> </h3>
 {#<h3>  <a href="{% url 'ticket_edit2' ticket.id %} " > EDIT TICKET2 ---> nie waliduje osob przypisanych :(</a> </h3>#}
-{#<h3>  <a href="{% url 'corespondence_create' ticket.id %} " > ADD CORESPONDENCE</a> </h3>   # Creation View migrates tt direct, TicketView  #}
+{#<h3>  <a href="{% url 'correspondence_create' ticket.id %} " > ADD CORRESPONDENCE</a> </h3>   # Creation View migrates tt direct, TicketView  #}
 
- <h2>CORESPONDENCE:   {% if user.is_authenticated %} {% include 'base_form.html' with form=form %} {% endif %} </h2>
-{% for corespond in corespondence %}
+ <h2>CORRESPONDENCE:   {% if user.is_authenticated %} {% include 'base_form.html' with form=form %} {% endif %} </h2>
+{% for corespond in correspondence %}
    <p>   {{ forloop.counter}})  Date of add: {{ corespond.date_creation }} <br>
        <b> User: {{ corespond.user }} Description: </b> {{ corespond.description }} </p>
  {% endfor %}

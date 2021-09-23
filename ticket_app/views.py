@@ -200,10 +200,10 @@ class TicketCreate(LoginRequiredMixin, View):
 class TicketView(View):
     def get(self, request, *args, **kwargs):
         ticket = Ticket.objects.get(id=kwargs['ticket_id'])
-        corespondence = Correspondence.objects.filter(ticket_correspondence_id=ticket.pk)
+        correspondence = Correspondence.objects.filter(ticket_correspondence_id=ticket.pk)
         context = {
             'ticket': ticket,
-            'corespondence': corespondence,
+            'correspondence': correspondence,
             'form': TicketCorespondenceForm(),
                 }
         return render(request, 'ticket_app/ticket_view.html', context)

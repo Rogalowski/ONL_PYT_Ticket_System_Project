@@ -45,7 +45,8 @@ class TicketUpdateForm(ModelForm):
 
 # Ticket search form
 class TicketSearchForm(ModelForm):
-    title = forms.CharField(required=False)
+    title = forms.CharField(label='Search by title/status', required=False)
+    user_requestor = forms.ModelChoiceField(queryset=User.objects.all(), required=False)
 
     class Meta:
         model = Ticket
@@ -55,7 +56,7 @@ class TicketSearchForm(ModelForm):
             # 'status',
         )
         labels = {
-            "title": ("Search by title/status"),
+            "title": "Search by title/status",
         }
 
 

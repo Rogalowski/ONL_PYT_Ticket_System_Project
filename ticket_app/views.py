@@ -97,15 +97,18 @@ class TicketList(View):
 
             filter_ticket_title = {'title__icontains': typed_name}  # filtering by typed title
             filter_ticket_status = {'status__icontains': typed_name}  # filtering by typed status
-            filter_ticket_requester = {
-                'user_requestor__username__icontains': typed_user # filtering by typed user
-            }
-            tickets = Ticket.objects.filter(Q(**filter_ticket_title) |
-                                            Q(**filter_ticket_status) and
-                                            Q(**filter_ticket_requester)).order_by('title').distinct()
-            # tickets2 = Ticket.objects.filter(user_requestor__username=typed_user)
-            # tickets = Ticket.objects.filter(title__icontains=title)
-            # status = Ticket.objects.filter(status__icontains=status)
+            # filter_ticket_requester = {
+            #     'user_requestor__username__icontains': typed_user.username  # filtering by typed user
+            # }
+
+            if not typed_user:
+                tickets = Ticket.objects.filter(Q(**filter_ticket_title) |
+                                                Q(**filter_ticket_status)).order_by('title').distinct()
+            else:
+                tickets = Ticket.objects.filter(Q(**filter_ticket_title) |
+                                                Q(**filter_ticket_status)).filter(
+                    user_requestor__username__icontains=typed_user.username
+                ).order_by('title').distinct()
 
             paginator = Paginator(tickets, 6)  # max number of objects on page
             page = request.GET.get('page')
@@ -396,7 +399,7 @@ class UserSettingsEditView(LoginRequiredMixin, View):
         logged_user = User.objects.get(username=request.user.username)
         print(f'Current: {current_user}')
         print(f'Logged: {logged_user}')
-        if logged_user.username == current_user:
+        if logged_user.username == current_user:  # Protection from edit settings another non logged user
             user_detail = User.objects.filter(username=current_user).values()[0]
             context = {
                 'form': UserSettingsForm(user_detail),

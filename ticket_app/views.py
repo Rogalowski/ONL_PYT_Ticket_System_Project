@@ -263,7 +263,7 @@ class TicketEditView(LoginRequiredMixin, UpdateView):
 
     def post(self, request, *args, **kwargs):
         form = TicketUpdateForm(request.POST)
-
+        logged_user = User.objects.get(username=request.user.username)
         if form.is_valid():
             title = form.cleaned_data['title']
             description = form.cleaned_data['description']
@@ -278,14 +278,17 @@ class TicketEditView(LoginRequiredMixin, UpdateView):
             user_requestor = form.cleaned_data['user_requestor']
             print(f"Choosen user req: {user_requestor}")
             user_assignment = form.cleaned_data['user_assignment']
-
             print(problem_category.department.name_department)
             print(department_assignment.name_department)
+            print("AS", user_assignment.filter(department__name_department__icontains=department_assignment))
 
             # Check if Department choose is the same  department from problem category.
+            # Check if Department choose is the same as user assigned department
             # If not it will show error
             # Problem Category from other department assignment is prohibet
-            if department_assignment.name_department == problem_category.department.name_department:
+            if (department_assignment.name_department == problem_category.department.name_department) and \
+                    (user_assignment.filter(department__name_department__icontains=department_assignment)):
+
 
                 # ticket = Ticket.objects.create(**form.cleaned_data)
                 # ticket_update = Ticket(
@@ -314,6 +317,11 @@ class TicketEditView(LoginRequiredMixin, UpdateView):
                 ticket_update.department_assignment = department_assignment
                 ticket_update.problem_category = problem_category
                 ticket_update.user_requestor = user_requestor
+
+                # If user looged select another requester it will add information in title
+                if user_requestor != logged_user:
+                    ticket_update.title = title + f"  [ON BEHALF: {user_requestor}]"
+                    ticket_update.user_requestor = logged_user
                 if status == "Dropped" or 'Resolved Successfull':
                     ticket_update.date_resolve = datetime.datetime.now()
                 # Ticket save updated fields to database
@@ -330,7 +338,7 @@ class TicketEditView(LoginRequiredMixin, UpdateView):
             else:
                 context = {
                     'form': form,
-                    'result': f"ASSIGNED DEPARTMENT SHOULD HAVE ASSIGNED SAME DEPARTMENT OF PROBLEM"
+                    'result': f"ASSIGNED DEPARTMENT AND USER SHOULD HAVE ASSIGNED SAME DEPARTMENT OF PROBLEM"
                 }
                 return render(request, 'ticket_app/ticket_create_view.html', context)
 

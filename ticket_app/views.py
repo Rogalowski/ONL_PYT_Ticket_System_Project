@@ -289,7 +289,6 @@ class TicketEditView(LoginRequiredMixin, UpdateView):
             if (department_assignment.name_department == problem_category.department.name_department) and \
                     (user_assignment.filter(department__name_department__icontains=department_assignment)):
 
-
                 # ticket = Ticket.objects.create(**form.cleaned_data)
                 # ticket_update = Ticket(
                 # # ticket_update = Ticket.objects.update_or_create(
@@ -378,6 +377,7 @@ class UserLoginView(View):
                     'wrong_passes': wrong_passes,
                 }
                 return render(request, 'auth/login_user_view.html', context)
+
 
 # Logout view
 class UserLogoutView(View):

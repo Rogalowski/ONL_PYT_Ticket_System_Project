@@ -1,84 +1,79 @@
-# ONL_PYT_Ticket_System_Project
 Ticketing System Project
 
+Database design: https://sqldbd.com/pub/p48x91cfe82b422664b/ticket-system-db.html
+Trello Kanban Project Manager: https://trello.com/b/xIr9IQb3 
+Visual Design: https://app.moqups.com/cL6fXRN3Sn/edit/page/aafa9bb4b
 
-TICKETING SYSTEM
-System do zarządzania zgłoszeniami tt (trouble ticket) dotyczącymi problemami technicznymi użytkowników.
-Narazie jako admin może kazdy tt wystwaic do kazdego
-Główna strona:
-- panel logowania
-- inforamcja firmy i ze to system ticketowy
-- statystyki o  ilości tt na kazdym z działów (po kliknieciu na dzial przechodzi do kolejki tt) (jeśli ma uprawnienia)
-- Szczegoly zalogowanego uzytkownika
-
-Panel zalogowanego uzytkownika :
-- widoczne inforamcje o uztkowniku (mozliwosc zmiany hasla)
-- widoczne statystyki – ogolna ilosc rozwiazanych tt
-- widoczne tickety przypisane na dana osobe
-- widoczne tt przypisane ogolne do dzialu
-- widoczny link do wszystkich tt danego działu (nie rozpoatruje confidetiali)
-
-Zawartość tt:
-- Id tt
-- Tytuł
-- Opis
-- Status
-- priorytet (Low, Medium, High, ASAP) 
-- data utworzenia
-- data zakonczenia ( po dodaniu  statusu resolved, doda tez komentarz)
-- Korespondencja dla pracowników  z data wystawienia, przez kogo
-- Dział do którego jest wystawiony tt
-- Kategoria Problemu
-- Przypisanie
-- kto wystawił tt i z jakiego działu
-- mozliwosc dodania plików/zdjęć (opcjonalne)
-- historia zmian ticketa (opcjonalnie)
-
-Statusy tt:
-- Not Acknowledged
-- Pending (schedule, requestor information,  
-- Work in Progress
-- Resolved (Successfull, not successfull, 
-
-Działy (listy kolejek- po wybraniu na głownej stronie przejscie do logowania): 
-- IT (Information Technology),
-- HR (Human Resources),
-- PM (Project Management),
-- F&B (Finance & Buyers)
-IT
-
-Dział IT Kategorie problemów: Desktops/laptops, Pherieral devices, Mobile Devices, Network Infrastructure 
-
-Typy problemu dla  Desktops/laptops: 
-- Operating System 
-- Application
-- Hardware
-- Other
-
-Typy problemu dla Pherieral devices:
-- no conection
-- need assistance
-- broken
-- other
-
-Typy problemu dla Mobile devices:
-- no connection
-- no respond
-- broken device/battery
-- other
-
-Typy problemu dla Infrastructure devices:
-- network/connection
-- maintenance
-- upgrade/update
-- other
-
-HR 
-Dział HR Kategorie problemów: Work Schedule, Hiring Process, Umowa, Documents
-Typy problemu dla  Work Schedule: overtime/delegation, work time issue, change work time, other
-
-PM
-Dział PM Kategorie problemów: Project realization, Improvement, Inspection
+Ticketing System
  
-F&B
-Dział PM Kategorie problemów: Invoices, Payment, Delegation payment, contracts
+System for managing reports on technical problems of users (Trouble Ticket). The system contains
+Four sections, login system, adding new tickets depending on the type of problem and department which refers to
+Views of users, tickets and its editing.
+ 
+Main page:
+- Login panel
+- Company Information Ticket System
+- statistics on the amount of TT on each of the departments (after clicking on the department passes to the TT queue)
+- Detailed User's logged in
+
+ 
+TT content:
+- ID TT
+- Title
+- Description
+- status
+- Priority (Low, Medium, High, ASAP)
+- the date of creation
+- Date of the end (after adding the resolved status, also add a comment)
+- Correspondence for employees with the date of issue, by whom
+- the department to which TT is issued
+- Category of problem
+- assignment
+- Who staged TT and from what department
+- Possibility to add files / photos (optional)
+- Ticket's change history (optional)
+
+
+STATUS = (
+    ('Not Acknowledged', 'Not Acknowledged'),
+    ('Pending ', 'Pending'),
+    ('Pending Requestor Information', 'Pending Requestor Information'),
+    ('Work in Progress', 'Work in Progress'),
+    ('Blocked', 'Blocked'),
+    ('Dropped', 'Dropped'),
+    ('Resolved Successfull', 'Resolved Successfull'),
+)
+
+PRIORITY = (
+    ('Low', 'Low'),
+    ('Medium', 'Medium'),
+    ('High', 'High'),
+    ('ASAP', 'ASAP'),
+)
+
+DEPARTMENTS = (
+    ('Test', 'Test'),
+    ('IT', 'IT'),
+    ('HR', 'HR'),
+    ('PM', 'PM'),
+    ('F&B', 'F&B'),
+)
+
+CATEGORY_PROBLEM =  (
+    ('Desktops/Software', 'Desktops/Software'),
+    ('Pherieral devices', 'Pherieral devices'),
+    ('Mobile Devices', 'Mobile Devices'),
+    ('Network/Infrastructure', 'Network/Infrastructure'),
+    ('Work Schedule', 'Work Schedule'),
+    ('Hiring Process', 'Hiring Process'),
+    ('Employee', 'Employee'),
+    ('Documents', 'Documents'),
+    ('Project realization', 'Project realization'),
+    ('Improvement', 'Improvement'),
+    ('Inspection', 'Inspection'),
+    ('Invoices', 'Invoices'),
+    ('Payment', 'Payment'),
+    ('Delegation payment', 'Delegation payment'),
+    ('Orders', 'Orders'),
+    ('Other', 'Other'),
+)

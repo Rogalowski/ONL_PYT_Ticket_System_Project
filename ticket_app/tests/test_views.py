@@ -129,8 +129,7 @@ def test_ticket_create(user, client, ticket, department, department_problem):
     # assert Ticket.objects.first().title == 'created_title'
 
 
-
-
+# Test Ticket Edit
 @pytest.mark.django_db
 def test_ticket_edit(client, ticket, user, department, department_problem, correspondence):
     # client.login(username='jacek', password='jacek')

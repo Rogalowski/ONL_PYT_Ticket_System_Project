@@ -111,6 +111,7 @@ class Ticket(models.Model):
     user_assignment = models.ManyToManyField(User)
 
 
+# Correspondence model
 class Correspondence(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     description = models.CharField(max_length=1000)

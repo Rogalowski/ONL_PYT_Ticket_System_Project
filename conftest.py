@@ -80,12 +80,11 @@ def ticket_user_assignment(ticket, user):  # *args, **kwargs
     return ticket
 
 
-
 @pytest.fixture
 def correspondence(ticket, user):
     return Correspondence.objects.create(
         user=user,
-        description='Test Corespondence Description',
+        description='Test Correspondence Description',
         date_creation=timezone.now(),
         ticket_correspondence=ticket,
     )

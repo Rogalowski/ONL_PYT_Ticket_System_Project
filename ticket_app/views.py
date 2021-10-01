@@ -142,7 +142,7 @@ class TicketCreate(LoginRequiredMixin, View):
 
     # Post method for sent post request and save on database
     def post(self, request):
-        form = TicketForm(request.POST)
+        form = TicketForm(request.POST or None)
         context = {
             'form': form,
         }
@@ -214,7 +214,7 @@ class TicketView(View):
     # Post method for correspondence form, to add new correspondence/comments.
     # For anonymous users, has hidden form on HTML side
     def post(self, request, *args, **kwargs):
-        form = TicketCorespondenceForm(request.POST)
+        form = TicketCorespondenceForm(request.POST or None)
         if form.is_valid():
             logged_user = User.objects.get(username=request.user.username)
             # user = form.cleaned_data['user']  # requestor of correspondence should be logged
@@ -262,7 +262,7 @@ class TicketEditView(LoginRequiredMixin, UpdateView):
         return reverse('ticket_list')  # , kwargs=['ticket_id']
 
     def post(self, request, *args, **kwargs):
-        form = TicketUpdateForm(request.POST)
+        form = TicketUpdateForm(request.POST or None)
         logged_user = User.objects.get(username=request.user.username)
         if form.is_valid():
             title = form.cleaned_data['title']
@@ -357,7 +357,7 @@ class UserLoginView(View):
 
     # post method for login, needed correct username and password
     def post(self, request, *args, **kwargs):
-        form = UserLoginForm(request.POST)
+        form = UserLoginForm(request.POST or None)
 
         if form.is_valid():
             username = form.cleaned_data['username']
@@ -370,7 +370,9 @@ class UserLoginView(View):
                 login(request, user)
                 return redirect('home_index')
             else:
-                wrong_passes = "Wrong login or password! Try again!"
+                attempt = request.session.get("attempt") or 0
+                request.session['attempt'] = attempt + 1
+                wrong_passes = f"Wrong login or password! Try again {attempt}!"
                 context = {
                     'form': form,
                     'wrong_passes': wrong_passes,
@@ -421,15 +423,16 @@ class UserSettingsEditView(LoginRequiredMixin, View):
             return render(request, 'auth/login_user_view.html', context)
 
     def post(self, request, current_user):
-        form = UserSettingsForm(request.POST)
+        form = UserSettingsForm(request.POST or None)
 
         if form.is_valid():
 
             password1 = make_password(form.cleaned_data['password1'])
-            # password2 = make_password(form.cleaned_data['password2'])
+
+
             first_name = form.cleaned_data['first_name']
             last_name = form.cleaned_data['last_name']
-            email = form.cleaned_data['email']
+            # email = form.cleaned_data['email']
             address_city = form.cleaned_data['address_city']
             phone_number = form.cleaned_data['phone_number']
             # user = authenticate(username=username, password=password)
@@ -445,7 +448,7 @@ class UserSettingsEditView(LoginRequiredMixin, View):
 
             user_update.first_name = first_name
             user_update.last_name = last_name
-            user_update.email = email
+            # user_update.email = email
             user_update.address_city = address_city
             user_update.phone_number = phone_number
 
@@ -453,6 +456,8 @@ class UserSettingsEditView(LoginRequiredMixin, View):
             print('ZAPISANO')
 
             return redirect('user_logout_home')
+        return redirect('user_edit_settings', current_user)
+
 
 
 #

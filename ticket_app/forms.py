@@ -80,14 +80,37 @@ class UserLoginForm(forms.Form):
 
 class UserSettingsForm(forms.Form):
     # username = forms.CharField(validators=[username_validator], required=True)
-
+ 
     password1 = forms.CharField(
-          widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Your password'})
+        label="Password",
+        widget=forms.PasswordInput(attrs={'placeholder': 'Your password', 'autocomplete': 'new-password'})
+    )
+    password2 = forms.CharField(
+        label="Retype password",
+        widget=forms.PasswordInput(attrs={'placeholder': 'Retype password as before', 'autocomplete': 'new-password'}),
     )
     # password2 = forms.CharField(widget=forms.PasswordInput(), required=True)
     first_name = forms.CharField(required=True)
     last_name = forms.CharField(required=True)
-    email = forms.EmailField(required=True)
+    # email = forms.EmailField(required=True)
     address_city = forms.CharField(max_length=64)
     phone_number = forms.IntegerField()
+
+    # def clean_email(self):
+    #     email = self.cleaned_data.get('email')
+    #     qs = User.objects.filter(email__iexact=email)
+    #     if qs.count() > 0:
+    #         raise forms.ValidationError("Email address exsist, choose another", code='email_mismatch')
+    #     return email
+
+
+    def clean_password2(self):
+        password1 = self.cleaned_data.get("password1")
+        password2 = self.cleaned_data.get("password2")
+        if password1 and password2 and password1 != password2:
+            print('INNE HASLA')
+            raise forms.ValidationError(
+                "Password mismatch, try again", code='password_mismatch'
+            )
+        return password2
 

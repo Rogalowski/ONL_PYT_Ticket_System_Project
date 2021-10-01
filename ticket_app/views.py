@@ -183,7 +183,7 @@ class TicketCreate(LoginRequiredMixin, View):
                 ticket_create.user_assignment.add(
                     *User.objects.filter(department_id=department_assignment.pk)
                 )
-                return redirect('ticket_list', 'ALL')
+                return redirect('ticket_list', department_assignment.name_department)
             else:
                 context = {
                     'form': form,

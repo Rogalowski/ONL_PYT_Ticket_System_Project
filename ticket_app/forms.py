@@ -43,6 +43,7 @@ class TicketUpdateForm(ModelForm):
         exclude = ('date_creation',)
 
 
+
 # Ticket search form
 class TicketSearchForm(ModelForm):
     title = forms.CharField(label='Search by title/status', required=False)

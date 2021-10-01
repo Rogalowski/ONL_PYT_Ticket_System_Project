@@ -319,8 +319,7 @@ class TicketEditView(LoginRequiredMixin, UpdateView):
 
                 # If user looged select another requester it will add information in title
                 if user_requestor != logged_user:
-                    ticket_update.title = title + f"  [ON BEHALF: {user_requestor}]"
-                    ticket_update.user_requestor = logged_user
+                    ticket_update.title = title + f"  [ON BEHALF: {logged_user}]"
                 if status == "Dropped" or 'Resolved Successfull':
                     ticket_update.date_resolve = datetime.datetime.now()
                 # Ticket save updated fields to database

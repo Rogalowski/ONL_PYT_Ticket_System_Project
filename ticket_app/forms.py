@@ -77,27 +77,13 @@ class UserLoginForm(forms.Form):
     password = forms.CharField(widget=forms.PasswordInput(), required=True)
 
 
-# Logged user settings Form
-# class UserSettingsForm(ModelForm):
-#     class Meta:
-#         model = User
-#         fields = (
-#             'username',
-#             'password',
-#             'first_name',
-#             'last_name',
-#             'email',
-#             'address_city',
-#             'phone_number',
-#         )
 
-# def username_validator(username):
-#     if User.objects.filter(username=username).exists():
-# raise ValidationError('Username already exist', code='invalid')
 class UserSettingsForm(forms.Form):
     # username = forms.CharField(validators=[username_validator], required=True)
-    username = forms.CharField(required=True)
-    password1 = forms.CharField(widget=forms.PasswordInput(), required=True)
+
+    password1 = forms.CharField(
+          widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Your password'})
+    )
     # password2 = forms.CharField(widget=forms.PasswordInput(), required=True)
     first_name = forms.CharField(required=True)
     last_name = forms.CharField(required=True)

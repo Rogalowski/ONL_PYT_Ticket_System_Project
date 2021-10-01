@@ -424,7 +424,7 @@ class UserSettingsEditView(LoginRequiredMixin, View):
         form = UserSettingsForm(request.POST)
 
         if form.is_valid():
-            username = form.cleaned_data['username']
+
             password1 = make_password(form.cleaned_data['password1'])
             # password2 = make_password(form.cleaned_data['password2'])
             first_name = form.cleaned_data['first_name']
@@ -442,7 +442,7 @@ class UserSettingsEditView(LoginRequiredMixin, View):
             # else:
             user_update.password = password1
 
-            user_update.username = username
+
             user_update.first_name = first_name
             user_update.last_name = last_name
             user_update.email = email
@@ -451,19 +451,10 @@ class UserSettingsEditView(LoginRequiredMixin, View):
 
             user_update.save()
             print('ZAPISANO')
-            # if user typed correct passes will redirect to home view
-            # if not will ask for try one more time
-            # if user is not None:
-            #     login(request, user)
-            #     return redirect('home_index')
-            # else:
-            #     wrong_passes = "Wrong login or password! Try again!"
-            #     context = {
-            #         'form': form,
-            #         'wrong_passes': wrong_passes,
-            #     }
-            #     return render(request, 'auth/login_user_view.html', context)
+
             return redirect('user_logout_home')
+
+
 #
 # #MOZNA USUNAC, PRAWIDLOWY TICKET EDIT VIEW2
 # class TicketEditView(View):

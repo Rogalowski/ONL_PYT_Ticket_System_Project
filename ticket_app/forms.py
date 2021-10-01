@@ -80,7 +80,7 @@ class UserLoginForm(forms.Form):
 
 class UserSettingsForm(forms.Form):
     # username = forms.CharField(validators=[username_validator], required=True)
- 
+
     password1 = forms.CharField(
         label="Password",
         widget=forms.PasswordInput(attrs={'placeholder': 'Your password', 'autocomplete': 'new-password'})

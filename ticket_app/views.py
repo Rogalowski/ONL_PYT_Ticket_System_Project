@@ -7,9 +7,9 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.shortcuts import render, redirect, get_object_or_404
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 from django.views import View
-from django.views.generic import UpdateView
+from django.views.generic import UpdateView, DeleteView
 from .models import Ticket, User, Correspondence
 from ticket_app.forms import TicketForm, TicketUpdateForm, \
     TicketSearchForm, TicketCorespondenceForm, UserLoginForm, UserSettingsForm
@@ -345,6 +345,26 @@ class TicketEditView(LoginRequiredMixin, UpdateView):
             'result': f"FORM CRUSHED, TRY ONE MORE TIME"
         }
         return render(request, 'ticket_app/ticket_create_view.html', context)
+
+
+class CorrespondenceDeleteView(DeleteView):
+    template_name = 'ticket_app/correspondence_confirm_delete.html'
+    model = Correspondence
+    fields = ['description']
+
+    success_url = '../'
+    # def get_success_url(self):
+    #     return reverse('ticket', kwargs={'ticket_id': self.ticket.id})
+        # ticket = self.object.ticket_correspondence_id
+        # return reverse_lazy('ticket', kwargs={'ticket.id': ticket.id})
+    # def get_success_url(self):
+    #     # return redirect('ticket')
+    #
+    #     return reverse('ticket', 'ticket_id')
+
+    def get_object(self, queryset=None):
+        id_ = self.kwargs.get('correspondence_id')
+        return get_object_or_404(Correspondence, id=id_)
 
 
 # User login form view

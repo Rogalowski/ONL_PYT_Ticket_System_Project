@@ -45,8 +45,11 @@
 
  <h2>CORRESPONDENCE:   {% if user.is_authenticated %} {% include 'base_form.html' with form=form %} {% endif %} </h2>
 {% for corespond in correspondence %}
-   <p>   {{ forloop.counter}})  Date of add: {{ corespond.date_creation }} <br>
-       <b> User: {{ corespond.user }} Description: </b> {{ corespond.description }} </p>
+   <p>   {{ forloop.counter}}) <b> Date of add: </b>{{ corespond.date_creation }}
+       <b> User: </b> {{ corespond.user }} <br>
+          <b> Description: </b>{{ corespond.description }} </p>
+
+    <h4>  <a href="{% url 'correspondence_delete' ticket.id  corespond.id%} " > DELETE </a> </h4>
  {% endfor %}
 
 

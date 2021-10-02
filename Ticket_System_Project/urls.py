@@ -20,6 +20,8 @@ from django.conf import settings  # static ROOT import
 from ticket_app.views import HomeView, TicketCreate, TicketView, TicketEditView, \
     TicketList, UserLoginView, UserLogoutView, UserDetailsView, UserSettingsEditView, CorrespondenceDeleteView
 
+
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', HomeView.as_view(), name="home_index"),

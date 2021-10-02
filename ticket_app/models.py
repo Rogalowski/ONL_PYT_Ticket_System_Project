@@ -111,8 +111,8 @@ class Ticket(models.Model):
     user_assignment = models.ManyToManyField(User)
 
     def get_absolute_url(self):
-
         return reverse('ticket', kwargs={'ticket_id': self.id})
+        # return reverse('ticket', kwargs={'ticket_id': self.id})
 
 
 # Correspondence model

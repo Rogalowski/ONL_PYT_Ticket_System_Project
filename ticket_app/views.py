@@ -3,7 +3,7 @@ import datetime
 from django.contrib.auth import logout, login, authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.hashers import make_password
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.shortcuts import render, redirect, get_object_or_404
@@ -347,20 +347,17 @@ class TicketEditView(LoginRequiredMixin, UpdateView):
         return render(request, 'ticket_app/ticket_create_view.html', context)
 
 
-class CorrespondenceDeleteView(DeleteView):
+
+class CorrespondenceDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     template_name = 'ticket_app/correspondence_confirm_delete.html'
     model = Correspondence
     fields = ['description']
 
-    success_url = '../'
-    # def get_success_url(self):
-    #     return reverse('ticket', kwargs={'ticket_id': self.ticket.id})
-        # ticket = self.object.ticket_correspondence_id
-        # return reverse_lazy('ticket', kwargs={'ticket.id': ticket.id})
-    # def get_success_url(self):
-    #     # return redirect('ticket')
-    #
-    #     return reverse('ticket', 'ticket_id')
+    def test_func(self):
+        return self.request.user.is_superuser
+
+    def get_success_url(self):
+        return reverse('ticket', kwargs={'ticket_id': self.kwargs['ticket_id']})
 
     def get_object(self, queryset=None):
         id_ = self.kwargs.get('correspondence_id')

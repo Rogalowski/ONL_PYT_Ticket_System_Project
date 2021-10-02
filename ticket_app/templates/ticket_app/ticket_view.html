@@ -44,12 +44,13 @@
 {#<h3>  <a href="{% url 'correspondence_create' ticket.id %} " > ADD CORRESPONDENCE</a> </h3>   # Creation View migrates tt direct, TicketView  #}
 
  <h2>CORRESPONDENCE:   {% if user.is_authenticated %} {% include 'base_form.html' with form=form %} {% endif %} </h2>
-{% for corespond in correspondence %}
-   <p>   {{ forloop.counter}}) <b> Date of add: </b>{{ corespond.date_creation }}
-       <b> User: </b> {{ corespond.user }} <br>
-          <b> Description: </b>{{ corespond.description }} </p>
-
-    <h4>  <a href="{% url 'correspondence_delete' ticket.id  corespond.id%} " > DELETE </a> </h4>
+{% for correspond in correspondence %}
+   <p>   {{ forloop.counter}}) <b> Date of add: </b>{{ correspond.date_creation }}
+       <b> User: </b> {{ correspond.user }} <br>
+          <b> Description: </b>{{ correspond.description }} </p>
+ {% if request.user.is_superuser %}
+    <h4>  <a href="{% url 'correspondence_delete' ticket.id  correspond.id %} " > DELETE </a> </h4>
+    {% endif %}
  {% endfor %}
 
 

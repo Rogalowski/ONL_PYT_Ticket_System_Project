@@ -15,7 +15,7 @@
 
 <p>&nbsp;<img align="center" src="https://github-readme-stats.vercel.app/api?username=rogalowski&show_icons=true&locale=en" alt="rogalowski" /></p>
 
-![](http://github-profile-summary-cards.vercel.app/api/cards/profile-details?username=rogalowski&theme=solarized) 
+<p align="center">![](http://github-profile-summary-cards.vercel.app/api/cards/profile-details?username=rogalowski&theme=solarized)  </p>
 
 <h2 align="center">Ticketing System Project</h2>
 

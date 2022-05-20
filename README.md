@@ -49,7 +49,7 @@ TT content:
 - the department to which TT is issued
 - Category of problem
 - assignment
-- Who staged TT and from what department
+- Who staged TT and from which department
 - Possibility to add files / photos (optional)
 - Ticket's change history (optional)
 

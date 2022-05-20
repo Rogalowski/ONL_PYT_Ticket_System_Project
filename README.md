@@ -1,8 +1,6 @@
 <h1 align="center">Rogalowski's Project <img src="https://komarev.com/ghpvc/?username=rogalowski&label=Profile%20views&color=0e75b6&style=flat" alt="rogalowski" /></h1>
 
-<p align="left"> <img src="https://komarev.com/ghpvc/?username=rogalowski&label=Profile%20views&color=0e75b6&style=flat" alt="rogalowski" /> </p>
 
-<p align="left"> <a href="https://github.com/ryo-ma/github-profile-trophy"><img src="https://github-profile-trophy.vercel.app/?username=rogalowski" alt="rogalowski" /></a> </p>
 
 <h3 align="left">Connect with me:</h3>
 <p align="left">
@@ -17,8 +15,6 @@
 
 <p>&nbsp;<img align="center" src="https://github-readme-stats.vercel.app/api?username=rogalowski&show_icons=true&locale=en" alt="rogalowski" /></p>
 
-![Anurag's GitHub stats](https://github-readme-stats.vercel.app/api?username=Rogalowski&show_icons=true&theme=highcontrast)
- 
 
 
 <h2 align="center">Ticketing System Project</h2>

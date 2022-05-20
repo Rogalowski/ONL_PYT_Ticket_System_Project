@@ -13,13 +13,10 @@
 
  ![](http://github-profile-summary-cards.vercel.app/api/cards/profile-details?username=rogalowski&theme=solarized)  
 
-<p><img align="left" src="https://github-readme-stats.vercel.app/api/top-langs?username=rogalowski&show_icons=true&locale=en&layout=compact" alt="rogalowski" /></p>
-
-<p>&nbsp;<img align="center" src="https://github-readme-stats.vercel.app/api?username=rogalowski&show_icons=true&locale=en" alt="rogalowski" /></p>
+<p>  <img align="center" src="https://github-readme-stats.vercel.app/api?username=rogalowski&show_icons=true&locale=en" alt="rogalowski" /> &nbsp; <img align="left" src="https://github-readme-stats.vercel.app/api/top-langs?username=rogalowski&show_icons=true&locale=en&layout=compact" alt="rogalowski" /> </p>
 
 
-
-<h2 align="center">Ticketing System Project</h2>
+<h1 align="center">Ticketing System Project</h1>
 
 Database design: https://sqldbd.com/pub/p48x91cfe82b422664b/ticket-system-db.html
 Trello Kanban Project Manager: https://trello.com/b/xIr9IQb3 

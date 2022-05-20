@@ -1,5 +1,7 @@
 Ticketing System Project
 
+![Anurag's GitHub stats](https://github-readme-stats.vercel.app/api?username=anuraghazra&show_icons=true&theme=radical)
+
 Database design: https://sqldbd.com/pub/p48x91cfe82b422664b/ticket-system-db.html
 Trello Kanban Project Manager: https://trello.com/b/xIr9IQb3 
 Visual Design: https://app.moqups.com/cL6fXRN3Sn/edit/page/aafa9bb4b

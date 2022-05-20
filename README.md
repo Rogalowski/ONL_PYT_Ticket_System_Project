@@ -1,4 +1,4 @@
-<h1 align="center">Rogalowski's Project</h1>
+<h1 align="center">Rogalowski's Project <img src="https://komarev.com/ghpvc/?username=rogalowski&label=Profile%20views&color=0e75b6&style=flat" alt="rogalowski" /></h1>
 
 <p align="left"> <img src="https://komarev.com/ghpvc/?username=rogalowski&label=Profile%20views&color=0e75b6&style=flat" alt="rogalowski" /> </p>
 

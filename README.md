@@ -1,14 +1,4 @@
-
-
-![Anurag's GitHub stats](https://github-readme-stats.vercel.app/api?username=Rogalowski&show_icons=true&theme=highcontrast)
-[![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=Rogalowski&layout=compact)](https://github.com/anuraghazra/github-readme-stats)
-
-Database design: https://sqldbd.com/pub/p48x91cfe82b422664b/ticket-system-db.html
-Trello Kanban Project Manager: https://trello.com/b/xIr9IQb3 
-Visual Design: https://app.moqups.com/cL6fXRN3Sn/edit/page/aafa9bb4b
-
-
-<h3 align="center">A passionate frontend developer from India</h3>
+<h3 align="center">Rogalowski</h3>
 
 <p align="left"> <img src="https://komarev.com/ghpvc/?username=rogalowski&label=Profile%20views&color=0e75b6&style=flat" alt="rogalowski" /> </p>
 
@@ -28,7 +18,16 @@ Visual Design: https://app.moqups.com/cL6fXRN3Sn/edit/page/aafa9bb4b
 <p>&nbsp;<img align="center" src="https://github-readme-stats.vercel.app/api?username=rogalowski&show_icons=true&locale=en" alt="rogalowski" /></p>
 
 
+![Anurag's GitHub stats](https://github-readme-stats.vercel.app/api?username=Rogalowski&show_icons=true&theme=highcontrast)
+[![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=Rogalowski&layout=compact)](https://github.com/anuraghazra/github-readme-stats)
+
+
+
 <h2>Ticketing System Project</h2>
+
+Database design: https://sqldbd.com/pub/p48x91cfe82b422664b/ticket-system-db.html
+Trello Kanban Project Manager: https://trello.com/b/xIr9IQb3 
+Visual Design: https://app.moqups.com/cL6fXRN3Sn/edit/page/aafa9bb4b
 
 Basic Overview
 

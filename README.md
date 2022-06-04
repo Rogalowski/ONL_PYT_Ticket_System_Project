@@ -109,9 +109,11 @@ Configuration
 
 Clone repo & create a virtual environment and activate
 
-    pip install virtalenv
-    virtualenv envname
-    cd envname\scripts\activate
-    cd into project folder
-    pip install -r requirements.txt
-    python manage.py runserver
+    1 pip install virtalenv
+    2 virtualenv envname
+    3 cd envname\scripts\activate
+    4 cd into project folder
+    5 pip install -r requirements.txt
+    6 install & run postgres database service
+    7 create ticketing_db database && import last dump from folder project
+    8 python manage.py runserver

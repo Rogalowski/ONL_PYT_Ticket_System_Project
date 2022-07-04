@@ -28,7 +28,8 @@ System for managing reports on technical problems of users (Trouble Ticket). The
 Four sections, login system, adding new tickets depending on the type of problem and department which refers to
 Views of users, tickets and its editing.
 
-
+Trello project: 
+https://trello.com/b/xIr9IQb3/ticketing-system
  
 Main page:
 - Login panel

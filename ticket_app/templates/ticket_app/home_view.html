@@ -15,11 +15,11 @@
     </div>
 
 
-            <h2> <a href="{% url 'ticket_list' department='ALL'  %} " >SEE ALL {{ all_tickets.count }} TICKETS </a>  </h2>
+         <button>    <h2> <a href="{% url 'ticket_list' department='ALL'  %} " >SEE ALL {{ all_tickets.count }} TICKETS </a>  </h2> </button>
 
 
 <br>
-      <h1> <a href="{% url 'ticket_create'  %} " >RAISE A TICKET </a>  </h1>
+   <button>    <h1> <a href="{% url 'ticket_create'  %} " >RAISE A TICKET </a>  </h1></button>
 
 
  {% endblock content %}

@@ -2,8 +2,8 @@ body{
         margin: 0;
 
 
-            background: rgb(174, 238, 237);
-                background: radial-gradient(circle, rgba(174, 238, 237, 0.6951155462184874) 0%, rgba(148, 210, 233, 0.7147233893557423) 100%);olor: transparent
+            background: rgb(202, 255, 254);
+                background: radial-gradient(circle, rgba(255, 255, 255, 0.905) 0%, rgba(148, 210, 233, 0.7147233893557423) 100%);olor: transparent
 
 }
 
@@ -55,14 +55,11 @@ column-count: 2;
     border-radius: 15px;
     padding: 10px 45px;
     color: #000000;
-    display: inline-block;
+
     font: normal bold 26px/1 "Open Sans", sans-serif;
     text-align: center;
-display: block;
-    margin-left: auto;
-    margin-right: auto;
-    width: 50%;
-    text-align: center;
+
+
 
 
 }
@@ -76,10 +73,14 @@ button {
     border: none;
     text-align: center;
     font-size: 15px;
-    width: 20%;
+
     transition: all 0.5s;
     cursor: pointer;
     margin: 3px;
+    display: block;
+        margin-left: auto;
+        margin-right: auto;
+        width: 50%;
 }
 
 button:hover {
@@ -88,6 +89,6 @@ button:hover {
 
 button:active {
     background-color: #3e8e41;
-    box-shadow: 0 5px #666;
+    box-shadow: 4 5px rgb(255, 158, 158);
     transform: translateY(4px);
 }

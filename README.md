@@ -119,3 +119,7 @@ Clone repo & create a virtual environment and activate
     TEST PASSES FROM DATABASE:
     login: it_jacek password: admin
     login: admin password: admin
+
+# DOCKERIZED APP USE:
+
+sudo USER_ID=1000 GROUP_ID=1000 docker-compose up --build

@@ -85,7 +85,7 @@ DATABASES = {
         'NAME': 'ticketing_db',
         'USER': 'postgres',
         'PASSWORD': 'coderslab',
-        'PORT': 5431,
+        'PORT': 5433,
     }
 }
 

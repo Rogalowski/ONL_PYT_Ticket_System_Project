@@ -123,3 +123,5 @@ Clone repo & create a virtual environment and activate
 # DOCKERIZED APP USE:
 
 sudo USER_ID=1000 GROUP_ID=1000 docker-compose up --build
+and update database 
+sudo docker exec -i onl_pyt_ticket_system_project_database_1  psql -U postgres -d postgres < dump_11-09-2021_19_03_34

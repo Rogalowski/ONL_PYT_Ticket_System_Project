@@ -43,11 +43,11 @@ class TicketUpdateForm(ModelForm):
         exclude = ('date_creation',)
 
 
-
 # Ticket search form
 class TicketSearchForm(ModelForm):
     title = forms.CharField(label='Search by title/status', required=False)
-    user_requestor = forms.ModelChoiceField(queryset=User.objects.all(), required=False)
+    user_requestor = forms.ModelChoiceField(
+        queryset=User.objects.all(), required=False)
 
     class Meta:
         model = Ticket
@@ -77,17 +77,18 @@ class UserLoginForm(forms.Form):
     password = forms.CharField(widget=forms.PasswordInput(), required=True)
 
 
-
 class UserSettingsForm(forms.Form):
     # username = forms.CharField(validators=[username_validator], required=True)
 
     password1 = forms.CharField(
         label="Password",
-        widget=forms.PasswordInput(attrs={'placeholder': 'Your password', 'autocomplete': 'new-password'})
+        widget=forms.PasswordInput(
+            attrs={'placeholder': 'Your password', 'autocomplete': 'new-password'})
     )
     password2 = forms.CharField(
         label="Retype password",
-        widget=forms.PasswordInput(attrs={'placeholder': 'Retype password as before', 'autocomplete': 'new-password'}),
+        widget=forms.PasswordInput(
+            attrs={'placeholder': 'Retype password as before', 'autocomplete': 'new-password'}),
     )
     # password2 = forms.CharField(widget=forms.PasswordInput(), required=True)
     first_name = forms.CharField(required=True)
@@ -103,7 +104,6 @@ class UserSettingsForm(forms.Form):
     #         raise forms.ValidationError("Email address exsist, choose another", code='email_mismatch')
     #     return email
 
-
     def clean_password2(self):
         password1 = self.cleaned_data.get("password1")
         password2 = self.cleaned_data.get("password2")
@@ -113,4 +113,3 @@ class UserSettingsForm(forms.Form):
                 "Password mismatch, try again", code='password_mismatch'
             )
         return password2
-

@@ -1,0 +1,54 @@
+version: "3"
+services:
+
+  database:
+    restart: always
+    image: postgres
+    ports:
+      # - "5431:5432"
+      - "5431:5432"
+    networks:
+      - database-net
+    # environment:
+      # - POSTGRES_DB=${POSTGRES_DB_NAME}
+      # - POSTGRES_USER=${POSTGRES_USER}
+      # - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      # - POSTGRES_DB=postgres
+      # - POSTGRES_USER=postgres
+      # - POSTGRES_PASSWORD=bookstore
+
+    env_file:
+      - bookstore/.env
+    volumes:
+      - pgdata:/var/lib/posgresql/data
+
+
+
+  django_app:
+    # restart: always
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    command:  >
+      sh -c "python manage.py migrate &&
+             python manage.py runserver 0.0.0.0:8000"
+    # python manage.py collectstatic --noinput &&
+    depends_on:
+      - database
+    # links:
+    #   - database:database
+    networks:
+      - database-net
+
+
+networks:
+    database-net:
+volumes:
+  pgdata:
+
+
+
+
+

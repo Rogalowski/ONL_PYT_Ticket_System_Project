@@ -3,13 +3,17 @@
             {% block content %}
 
 
-<h1>
-    <h1> <a href="{% url 'ticket_list' department='IT'  %} " > IT </a>  </h1> Number of tickets on queue: {{ it_tickets.count}}
-    <h1> <a href="{% url 'ticket_list' department='HR'  %} " > HR </a>  </h1> Number of tickets on queue: {{ hr_tickets.count }}
-    <h1> <a href="{% url 'ticket_list' department='PM'  %} " > PM </a>  </h1> Number of tickets on queue: {{ pm_tickets.count }}
-    <h1> <a href="{% url 'ticket_list' department='FB'  %} " > F&B </a>  </h1> Number of tickets on queue: {{ fb_tickets.count }}
+<div class="button">
+   <button>  <h1> <a href="{% url 'ticket_list' department='IT'  %} " > IT </a></h1>   </button> Number of tickets on queue: {{ it_tickets.count}}
+   <br>
+   <button>   <h1> <a href="{% url 'ticket_list' department='HR'  %} " > HR </a>  </h1></button>  Number of tickets on queue: {{ hr_tickets.count }}
+    <br>
+     <button>   <h1> <a href="{% url 'ticket_list' department='PM'  %} " > PM </a>  </h1> </button>  Number of tickets on queue: {{ pm_tickets.count }}
+    <br>
+     <button>   <h1> <a href="{% url 'ticket_list' department='FB'  %} " > F&B </a>  </h1> </button>  Number of tickets on queue: {{ fb_tickets.count }}
+<br>
+    </div>
 
-</h1>
 
             <h2> <a href="{% url 'ticket_list' department='ALL'  %} " >SEE ALL {{ all_tickets.count }} TICKETS </a>  </h2>
 

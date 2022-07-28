@@ -1,0 +1,93 @@
+body{
+        margin: 0;
+
+
+            background: rgb(174, 238, 237);
+                background: radial-gradient(circle, rgba(174, 238, 237, 0.6951155462184874) 0%, rgba(148, 210, 233, 0.7147233893557423) 100%);olor: transparent
+
+}
+
+.ticket-banner {
+    animation: myAnim 10s ease 2s 1 normal forwards;
+border: 5px inset #002DA4;
+    border-radius: 16px;
+display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+    text-align: center;
+}
+
+@keyframes myAnim {
+    0% {
+        transform: translate(0);
+    }
+
+    20% {
+        transform: translate(4px, -4px);
+    }
+
+    40% {
+        transform: translate(4px, 4px);
+    }
+
+    60% {
+        transform: translate(-4px, 4px);
+    }
+
+    80% {
+        transform: translate(-2px, -4px);
+    }
+
+    100% {
+        transform: translate(0);
+    }
+}
+p{
+    text-align: left;
+    color: red;
+
+font-family: Arial, Helvetica, sans-serif;
+}
+
+.button{
+column-count: 2;
+    border-radius: 15px;
+    padding: 10px 45px;
+    color: #000000;
+    display: inline-block;
+    font: normal bold 26px/1 "Open Sans", sans-serif;
+    text-align: center;
+display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+    text-align: center;
+
+
+}
+
+h1, h2{
+    text-align: center;
+}
+button {
+    display: inline-block;
+    border-radius: 10px;
+    border: none;
+    text-align: center;
+    font-size: 15px;
+    width: 20%;
+    transition: all 0.5s;
+    cursor: pointer;
+    margin: 3px;
+}
+
+button:hover {
+    background-color: #b2ffb5
+}
+
+button:active {
+    background-color: #3e8e41;
+    box-shadow: 0 5px #666;
+    transform: translateY(4px);
+}

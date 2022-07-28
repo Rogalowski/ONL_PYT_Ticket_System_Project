@@ -6,9 +6,9 @@
     <title>Home Ticket System</title>
 </head>
 <body>
-
-<img src="{% static 'ticket_banner.png' %}" alt="TICKET SYSTEM"> <br>
-<h4> <a href="   {% url 'home_index' %} " > HOME SCREEN </a>  </h4>
+<link rel="stylesheet" href="{% static  'css/style.css' %}" />
+<img class="ticket-banner" src="{% static 'ticket_banner.png' %}" alt="TICKET SYSTEM"> <br>
+<h1> <a href="   {% url 'home_index' %} " > HOME SCREEN </a>  </h4>
             {% block content %}
 Some  Block Content
             {% endblock content %}

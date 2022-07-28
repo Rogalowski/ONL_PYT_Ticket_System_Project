@@ -100,7 +100,7 @@ Tech Stack
 
     Python 3.8
     Django 3.0.6
-    Postgres 14.4
+    Postgres 13.7
     Jinja
 
 Configuration
@@ -112,7 +112,10 @@ Clone repo & create a virtual environment and activate
     3 cd envname\scripts\activate
     4 cd into project folder
     5 pip install -r requirements.txt
-    6 install & run postgres database service
-    7 create ticketing_db database && import last dump from folder project
-    8 python manage.py migrate
+    6 install & run postgres database service (docker: sudo docker run --rm --name databasepostgres  -p 5433:5432 -e POSTGRES_PASSWORD=coderslab postgres:13.7)
+    7 create ticketing_db database && import last dump from folder project or python manage.py migrate
     9 python manage.py runserver
+
+    TEST PASSES FROM DATABASE:
+    login: it_jacek password: admin
+    login: admin password: admin

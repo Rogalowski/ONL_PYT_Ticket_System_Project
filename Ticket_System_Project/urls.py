@@ -18,7 +18,9 @@ from django.urls import path
 from django.conf.urls.static import static  # static ROOT import
 from django.conf import settings  # static ROOT import
 from ticket_app.views import HomeView, TicketCreate, TicketView, TicketEditView, \
-    TicketList, UserLoginView, UserLogoutView, UserDetailsView, UserSettingsEditView
+    TicketList, UserLoginView, UserLogoutView, UserDetailsView, UserSettingsEditView, CorrespondenceDeleteView
+
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -29,6 +31,8 @@ urlpatterns = [
     path('ticket/<int:ticket_id>', TicketView.as_view(), name="ticket"),
     path('ticket_edit/<int:ticket_id>', TicketEditView.as_view(), name="ticket_edit"),
     # path('ticket_edit2/<int:ticket_id>', TicketEditView2.as_view(), name="ticket_edit2"),
+    path('ticket/<int:ticket_id>/delete/<int:correspondence_id>', CorrespondenceDeleteView.as_view(), name="correspondence_delete"),
+
     path('login_home/', UserLoginView.as_view(), name="user_login_home"),
     path('logout_home/', UserLogoutView.as_view(), name="user_logout_home"),
     path('user_details/<str:current_user>/', UserDetailsView.as_view(), name="user_details"),

@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import PermissionsMixin, AbstractUser
-
+from django.urls import reverse
 
 STATUS = (
     ('Not Acknowledged', 'Not Acknowledged'),
@@ -110,6 +110,10 @@ class Ticket(models.Model):
                                        related_name="ticket_user_requestor")
     user_assignment = models.ManyToManyField(User)
 
+    def get_absolute_url(self):
+        return reverse('ticket', kwargs={'ticket_id': self.id})
+        # return reverse('ticket', kwargs={'ticket_id': self.id})
+
 
 # Correspondence model
 class Correspondence(models.Model):
@@ -118,3 +122,6 @@ class Correspondence(models.Model):
     date_creation = models.DateTimeField(auto_now_add=True)
     ticket_correspondence = models.ForeignKey(Ticket, related_name="ticket_correspondence",
                                               on_delete=models.CASCADE, default='')
+
+    def get_absolute_url(self):
+        return reverse('ticket', kwargs={'ticket_id': self.pk})

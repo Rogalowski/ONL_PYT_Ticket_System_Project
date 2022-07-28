@@ -79,6 +79,7 @@ WSGI_APPLICATION = "Ticket_System_Project.wsgi.application"
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
 DATABASES = {
+<<<<<<< HEAD
     "default": {
         "HOST": "127.0.0.1",
         "ENGINE": "django.db.backends.postgresql_psycopg2",
@@ -86,6 +87,15 @@ DATABASES = {
         "USER": "postgres",
         "PASSWORD": "coderslab",
         "PORT": 5433,
+=======
+    'default': {
+        'HOST': '127.0.0.1',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'ticketing_db',
+        'USER': 'postgres',
+        'PASSWORD': 'coderslab',
+        'PORT': 5433,
+>>>>>>> new/filefield
     }
 }
 
@@ -108,8 +118,13 @@ AUTH_PASSWORD_VALIDATORS = [
         "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
     },
 ]
+<<<<<<< HEAD
 LOGIN_URL = "user_login_home"
 # LOGIN_REDIRECT_URL = ''
+=======
+LOGIN_URL = 'user_login_home'
+#LOGIN_REDIRECT_URL = ''
+>>>>>>> new/filefield
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/

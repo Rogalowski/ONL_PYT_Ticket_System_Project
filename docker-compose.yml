@@ -20,7 +20,7 @@ services:
     env_file:
       - .env
     volumes:
-      - pgdata:/var/lib/posgresql/data
+      - vol_data:/vol/web/database
 
   django_app:
     # restart: always
@@ -45,11 +45,11 @@ services:
     networks:
       - database-net
     volumes:
-      - ./www_docker/:/usr/src/app
+      - vol_data:/vol/web/
 
 networks:
   database-net:
 volumes:
-  pgdata:
+  vol_data:
 
 

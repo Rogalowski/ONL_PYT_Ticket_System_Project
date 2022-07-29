@@ -32,5 +32,6 @@ six==1.14.0
 sqlparse==0.3.1
 toml==0.10.2
 urllib3==1.25.8
+uWSGI==2.0.20
 wcwidth==0.2.2
 webencodings==0.5.1

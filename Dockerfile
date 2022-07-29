@@ -12,6 +12,10 @@ RUN mkdir -p /vol/web/media
 RUN mkdir -p /vol/web/database
 
 RUN adduser -D user
+RUN chown -R user:user /vol
+RUN chmod -R 755 /vol/web
+
+USER user
 # CMD python manage.py migrate && python manage.py runserver 0.0.0.0:8080
 
 # EXPOSE 8080

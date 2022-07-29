@@ -16,19 +16,16 @@
 <h1 align="center">Ticketing System Project</h1>
 
 Database design: https://sqldbd.com/pub/p48x91cfe82b422664b/ticket-system-db.html
-Trello Kanban Project Manager: https://trello.com/b/xIr9IQb3
+Trello Kanban Project Manager: https://trello.com/b/xIr9IQb3 https://trello.com/b/xIr9IQb3/ticketing-system
 Visual Design: https://app.moqups.com/cL6fXRN3Sn/edit/page/aafa9bb4b
 
-Basic Overview
+# Basic Overview
 
 System for managing reports on technical problems of users (Trouble Ticket). The system contains
 Four sections, login system, adding new tickets depending on the type of problem and department which refers to
 Views of users, tickets and its editing.
 
-Trello project:
-https://trello.com/b/xIr9IQb3/ticketing-system
-
-Main page:
+# Features:
 
 -   Login panel
 -   Company Information Ticket System
@@ -96,7 +93,7 @@ CATEGORY_PROBLEM = (
 ('Other', 'Other'),
 )
 
-Tech Stack
+# Tech Stack:
 
     Python 3.8
     Django 3.0.6
@@ -104,7 +101,7 @@ Tech Stack
     Docker 20.10.17
     Jinja
 
-Configuration
+# Configuration:
 
 Clone repo & create a virtual environment and activate
 

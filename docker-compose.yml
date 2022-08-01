@@ -4,6 +4,7 @@ services:
   database:
     restart: always
     image: postgres:13.7
+    container_name: postgres_db
     ports:
       # - "5431:5432"
       - "5435:5432"
@@ -16,7 +17,8 @@ services:
       # - POSTGRES_DB=postgres
       # - POSTGRES_USER=postgres
       # - POSTGRES_PASSWORD=bookstore
-
+    environment:
+      - POSTGRES_HOST_AUTH_METHOD=trust
     env_file:
       - .env
     volumes:
@@ -24,19 +26,18 @@ services:
 
   django_app:
     # restart: always
+    container_name: django_app
     build:
       context: ./
       dockerfile: Dockerfile
     ports:
       - "8000:8000"
     command: >
-      sh -c "
+      sh -c "python manage.py runserver 0.0.0.0:8000 "
 
-
-             python manage.py runserver 0.0.0.0:8000"
+    # docker exec -i postgres_db psql -U postgres -d postgres < dump_11-09-2021_19_03_34.sql
     # python manage.py collectstatic --noinput &&
     #  python manage.py migrate &&
-    #sudo docker exec -i onl_pyt_ticket_system_project_database_1  psql -U postgres -d postgres < dump_11-09-2021_19_03_34 &&
     # sudo docker exec -i onl_pyt_ticket_system_project_database_1  psql -U postgres -d postgres < dump_30-10-2021_16_14_57.sql &&
     depends_on:
       - database

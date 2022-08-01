@@ -22,9 +22,7 @@ Visual Design: https://app.moqups.com/cL6fXRN3Sn/edit/page/aafa9bb4b
 # Basic Overview
 
 Please check published aplication: https://ticketing.rogalowski.uk/
-Based on mikr.Us VPS, Ubuntu 20.04, nginx, gunicorn: https://mikr.us/
-
-# Basic Overview
+Placed on mikr.us VPS, Ubuntu 20.04, nginx, gunicorn: https://mikr.us/
 
 System for managing reports on technical problems of users (Trouble Ticket). The system contains
 Four sections, login system, adding new tickets depending on the type of problem and department which refers to

@@ -34,6 +34,7 @@ Views of users, tickets and its editing.
 -   Company Information Ticket System
 -   statistics on the amount of TT on each of the departments (after clicking on the department passes to the TT queue)
 -   Detailed User's logged in
+-   Integrated test by pytest library
 
 TT content:
 

@@ -25,6 +25,8 @@ services:
       - vol_data:/vol/web/database
 
   django_app:
+    env_file:
+      - .env
     # restart: always
     container_name: django_app
     build:

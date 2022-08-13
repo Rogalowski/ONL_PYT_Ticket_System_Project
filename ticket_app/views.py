@@ -448,7 +448,6 @@ class UserSettingsEditView(LoginRequiredMixin, View):
 
             password1 = make_password(form.cleaned_data['password1'])
 
-
             first_name = form.cleaned_data['first_name']
             last_name = form.cleaned_data['last_name']
             # email = form.cleaned_data['email']
@@ -488,7 +487,7 @@ from Ticket_System_Project.tokens import account_activation_token
 
 def send_activation_email(user, request):
     current_site = get_current_site(request)
-    email_subject = 'Aktywacja konta na stronie ODDAM W DOBRE RĘCE'
+    email_subject = 'Account activation on Ticketing System Project'
 
     email_body = render_to_string('auth/activate.html', {
         'user': user,
@@ -518,7 +517,7 @@ def activate_user(request, uidb64, token):
 
         messages.add_message(
             request, messages.ERROR, 'Email zweryfikowany poprawnie, możesz się zalogować :)')
-        return redirect('home_view')
+        return redirect('home_index')
 
     messages.add_message(request, messages.ERROR,
                          f'Użytkownik źle zweryfikowany, prawdopodobnie aktywny!')

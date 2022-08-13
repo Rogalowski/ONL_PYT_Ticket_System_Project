@@ -15,8 +15,8 @@
 {#      <div class="slogan container container--90">#}
 {#          <h2>#}
 {% autoescape off %}
-            Cześć {{ user.username }}
-            Dziękujemy za rejestrację. Aby aktywować konto, wejdź w poniższy link :)
+            Hi {{ user.username }}
+            Thanks for register. To end registration process, please open this link :)
               http://{{ domain }}{% url 'activate' uidb64=uid token=token %}
 {%endautoescape %}
 {#          </h2>#}

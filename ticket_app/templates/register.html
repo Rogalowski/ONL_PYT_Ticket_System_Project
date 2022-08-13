@@ -6,10 +6,10 @@
         {% csrf_token %}
 
         <div class="form-group">
-            <input type="text" name="name" placeholder="Imię" />
+            <input type="text" name="first_name" placeholder="Imię" />
         </div>
         <div class="form-group">
-            <input type="text" name="surname" placeholder="Nazwisko" />
+            <input type="text" name="last_name" placeholder="Nazwisko" />
         </div>
         <div class="form-group">
             <input type="email" name="email" placeholder="Email" />
@@ -17,11 +17,11 @@
         <div class="form-group">
 
 
-        <select >
-  <option value="IT">IT</option>
-  <option value="HR">HR</option>
-  <option value="PM">PM</option>
-  <option value="F&B">F&B</option>
+        <select name="department">
+  <option value=2>TEST</option>
+  {% comment %} <option value=3>HR</option>
+  <option value=4>PM</option>
+  <option value=5>F&B</option> {% endcomment %}
 </select>
  </div>
         <div class="form-group">

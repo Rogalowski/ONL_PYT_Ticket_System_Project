@@ -10,7 +10,9 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse, reverse_lazy
 from django.views import View
 from django.views.generic import UpdateView, DeleteView
-from .models import Ticket, User, Correspondence
+from django.conf import settings
+
+from .models import Department, Ticket, User, Correspondence
 from ticket_app.forms import TicketForm, TicketUpdateForm, \
     TicketSearchForm, TicketCorespondenceForm, UserLoginForm, UserSettingsForm
 
@@ -516,7 +518,7 @@ def activate_user(request, uidb64, token):
 
         messages.add_message(
             request, messages.ERROR, 'Email zweryfikowany poprawnie, możesz się zalogować :)')
-        return redirect('login_view')
+        return redirect('home_view')
 
     messages.add_message(request, messages.ERROR,
                          f'Użytkownik źle zweryfikowany, prawdopodobnie aktywny!')
@@ -528,10 +530,13 @@ class RegisterView(View):
         return render(request, 'register.html')
 
     def post(self, request, *args, **kwargs):
-        name = request.POST.get('name')
-        surname = request.POST.get('surname')
+
+
+
+        first_name = request.POST.get('first_name')
+        last_name = request.POST.get('last_name')
         email = request.POST.get('email')
-        department = request.POST.get('department')
+        # department = request.POST.get('department')
         password = request.POST.get('password')
         password2 = request.POST.get('password2')
 
@@ -547,13 +552,16 @@ class RegisterView(View):
         # except ValidationError
         #     messages.add_message()
 
+        # print(department)
+        # depart = Department.objects.all().filter(id=department)
+        # print(depart)
         try:
             user = User.objects.create(
                 username=email,
-                first_name=name,
-                last_name=surname,
+                first_name=first_name,
+                last_name=last_name,
                 email=email,
-                department=department,
+                # department=depart,
                 password=password2,
                 is_active=False,
             )
@@ -563,7 +571,7 @@ class RegisterView(View):
             return render(request, 'register.html')
 
         send_activation_email(user, request)
-        return redirect('login_view')
+        return redirect('home_index')
 #
 # #MOZNA USUNAC, PRAWIDLOWY TICKET EDIT VIEW2
 # class TicketEditView(View):

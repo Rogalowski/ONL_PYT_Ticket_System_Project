@@ -1,0 +1,50 @@
+{% extends 'base.html' %} {% block content %}
+
+<section class="login-page">
+    <h2>Załóż konto</h2>
+    <form action="" method="POST">
+        {% csrf_token %}
+
+        <div class="form-group">
+            <input type="text" name="name" placeholder="Imię" />
+        </div>
+        <div class="form-group">
+            <input type="text" name="surname" placeholder="Nazwisko" />
+        </div>
+        <div class="form-group">
+            <input type="email" name="email" placeholder="Email" />
+        </div>
+        <div class="form-group">
+
+
+        <select >
+  <option value="IT">IT</option>
+  <option value="HR">HR</option>
+  <option value="PM">PM</option>
+  <option value="F&B">F&B</option>
+</select>
+ </div>
+        <div class="form-group">
+            <input type="password" name="password" placeholder="Hasło" />
+        </div>
+
+        <div class="form-group">
+            <input
+                type="password"
+                name="password2"
+                placeholder="Powtórz hasło"
+            />
+        </div>
+
+
+            <button class="btn" type="submit">Załóż konto</button>
+        </div>
+    </form>
+    {% if messages %}
+    <h2 style="color: red">
+        {% for message in messages %} {{ message }} {% endfor %}
+    </h2>
+    {% endif %}
+</section>
+
+{% endblock content %}

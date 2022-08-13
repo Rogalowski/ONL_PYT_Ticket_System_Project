@@ -82,7 +82,7 @@ class User(AbstractUser):
     address_city = models.CharField(max_length=64, default='N/A')
     phone_number = models.IntegerField(default=0)
     department = models.ForeignKey(Department, on_delete=models.CASCADE, default='1')
-
+    is_email_verified = models.BooleanField(default=False)
     def __str__(self):
         self.name_and_dept = f'{self.username} from {self.department} Department'
         return self.name_and_dept

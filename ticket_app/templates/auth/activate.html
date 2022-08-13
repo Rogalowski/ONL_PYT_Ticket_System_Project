@@ -1,0 +1,29 @@
+{#{% extends 'base.html' %}#}
+{##}
+{#{% block content %}#}
+{##}
+{##}
+{#        <ul>#}
+{#          <li><a href="{% url 'home_index' %}" class="btn btn--without-border active">Start</a></li>#}
+{#          <li><a href="{% url 'home_index' %}#steps" class="btn btn--without-border">O co chodzi?</a></li>#}
+{#          <li><a href="{% url 'home_index' %}#about-us" class="btn btn--without-border">O nas</a></li>#}
+{#          <li><a href="{% url 'home_index' %}#help" class="btn btn--without-border">Fundacje i organizacje</a></li>#}
+{#          <li><a href="{% url 'home_index' %}#contact" class="btn btn--without-border">Kontakt</a></li>#}
+{#        </ul>#}
+{#      </nav>#}
+{##}
+{#      <div class="slogan container container--90">#}
+{#          <h2>#}
+{% autoescape off %}
+            Cześć {{ user.username }}
+            Dziękujemy za rejestrację. Aby aktywować konto, wejdź w poniższy link :)
+              http://{{ domain }}{% url 'activate' uidb64=uid token=token %}
+{%endautoescape %}
+{#          </h2>#}
+{#      </div>#}
+{##}
+{#{% endblock content %}#}
+{##}
+{#    <script src="js/app.js"></script>#}
+{#  </body>#}
+{#</html>#}

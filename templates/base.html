@@ -35,7 +35,9 @@ Some  Block Content
                 {% else %}
             Hi: Annonymous
             <h4><a href={% url 'user_login_home' %}>Login</a></h4>
-            <h4>  SIGN IN  </h4>
+            <h4>
+              <a href="{% url 'register_view' %}" class="btn btn--large"> SIGN IN </a> </h4>
+
                 {% endif %}
 </h3>
 </footer>

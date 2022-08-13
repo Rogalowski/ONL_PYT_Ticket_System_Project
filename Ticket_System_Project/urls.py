@@ -18,7 +18,8 @@ from django.urls import path
 from django.conf.urls.static import static  # static ROOT import
 from django.conf import settings  # static ROOT import
 from ticket_app.views import HomeView, TicketCreate, TicketView, TicketEditView, \
-    TicketList, UserLoginView, UserLogoutView, UserDetailsView, UserSettingsEditView, CorrespondenceDeleteView
+    TicketList, UserLoginView, UserLogoutView, UserDetailsView, UserSettingsEditView, \
+        CorrespondenceDeleteView, RegisterView, activate_user
 
 
 
@@ -37,5 +38,8 @@ urlpatterns = [
     path('logout_home/', UserLogoutView.as_view(), name="user_logout_home"),
     path('user_details/<str:current_user>/', UserDetailsView.as_view(), name="user_details"),
     path('user_edit_settings/<str:current_user>/', UserSettingsEditView.as_view(), name="user_edit_settings"),
+    path('register/', RegisterView.as_view(), name="register_view"),
+    path('activate_user/<uidb64>/<token>',  activate_user, name="activate"),
+
 
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)  # static files ROOT

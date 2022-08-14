@@ -535,7 +535,7 @@ class RegisterView(View):
         first_name = request.POST.get('first_name')
         last_name = request.POST.get('last_name')
         email = request.POST.get('email')
-        # department = request.POST.get('department')
+        department = request.POST.get('department')
         password = request.POST.get('password')
         password2 = request.POST.get('password2')
 
@@ -551,16 +551,16 @@ class RegisterView(View):
         # except ValidationError
         #     messages.add_message()
 
-        # print(department)
-        # depart = Department.objects.all().filter(id=department)
-        # print(depart)
+        print(department)
+        depart_id = Department.objects.get(id=department)
+        print(depart)
         try:
             user = User.objects.create(
                 username=email,
                 first_name=first_name,
                 last_name=last_name,
                 email=email,
-                # department=depart,
+                department=depart_id,
                 password=password2,
                 is_active=False,
             )

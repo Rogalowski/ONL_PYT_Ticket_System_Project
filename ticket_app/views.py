@@ -553,7 +553,7 @@ class RegisterView(View):
 
         print(department)
         depart_id = Department.objects.get(id=department)
-        print(depart)
+        print(depart_id)
         try:
             user = User.objects.create(
                 username=email,

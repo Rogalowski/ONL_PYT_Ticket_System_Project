@@ -516,11 +516,11 @@ def activate_user(request, uidb64, token):
         user.save()
 
         messages.add_message(
-            request, messages.ERROR, 'Email zweryfikowany poprawnie, możesz się zalogować :)')
+            request, messages.SUCCESS, 'Email verified properly, you can log in now :)')
         return redirect('home_index')
 
     messages.add_message(request, messages.ERROR,
-                         f'Użytkownik źle zweryfikowany, prawdopodobnie aktywny!')
+                         f'User verification failed, probably has been activated!')
     return redirect('register_view')
 
 
@@ -543,7 +543,7 @@ class RegisterView(View):
             password2 = make_password(password)
         else:
             messages.add_message(
-                request, messages.ERROR, f'Podane hasła różnią się od siebie, spróbuj jeszcze raz!')
+                request, messages.ERROR, f'Passwords are different, please try again!')
             return render(request, 'register.html')
         # try :
         #     np = NumericPasswordValidator()
@@ -566,10 +566,13 @@ class RegisterView(View):
             )
         except:
             messages.add_message(
-                request, messages.ERROR, f'Użytkownik już istnieje, spróbuj jeszcze raz!')
+                request, messages.ERROR, f'User exsist, check email and click on activation link')
             return render(request, 'register.html')
 
         send_activation_email(user, request)
+        messages.add_message(
+            request, messages.SUCCESS, f'We have sent verification email, please check: {email} :)')
+
         return redirect('home_index')
 #
 # #MOZNA USUNAC, PRAWIDLOWY TICKET EDIT VIEW2

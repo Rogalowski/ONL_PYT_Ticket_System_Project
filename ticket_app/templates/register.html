@@ -1,15 +1,15 @@
 {% extends 'base.html' %} {% block content %}
 
 <section class="login-page">
-    <h2>Załóż konto</h2>
+    <h2>Create Account</h2>
     <form action="" method="POST">
         {% csrf_token %}
 
         <div class="form-group">
-            <input type="text" name="first_name" placeholder="Imię" />
+            <input type="text" name="first_name" placeholder="Name`" />
         </div>
         <div class="form-group">
-            <input type="text" name="last_name" placeholder="Nazwisko" />
+            <input type="text" name="last_name" placeholder="Surname" />
         </div>
         <div class="form-group">
             <input type="email" name="email" placeholder="Email" />
@@ -17,32 +17,33 @@
         <div class="form-group">
 
 
-        <select name="department">
-  <option value=2>TEST</option>
-  {% comment %} <option value=3>HR</option>
-  <option value=4>PM</option>
-  <option value=5>F&B</option> {% endcomment %}
+        <select >
+  <option name="department" value=2>TEST</option>
+ <option name="department" value=3>HR</option>
+  <option name="department" value=4>PM</option>
+  <option  name="department" value=5>F&B</option>
 </select>
  </div>
         <div class="form-group">
-            <input type="password" name="password" placeholder="Hasło" />
+            <input type="password" name="password" placeholder="Password" />
         </div>
 
         <div class="form-group">
             <input
                 type="password"
                 name="password2"
-                placeholder="Powtórz hasło"
+                placeholder="Refill password"
             />
         </div>
 
 
-            <button class="btn" type="submit">Załóż konto</button>
+           <button class="btn" type="submit">  <h2>Create Account</h2></button>
         </div>
     </form>
     {% if messages %}
     <h2 style="color: red">
         {% for message in messages %} {{ message }} {% endfor %}
+        {% for message.SUCCESS in messages %} {{ message }} {% endfor %}
     </h2>
     {% endif %}
 </section>

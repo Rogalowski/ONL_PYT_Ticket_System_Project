@@ -1,25 +1,42 @@
-{% extends 'base.html' %}
-
-            {% block content %}
-
+{% extends 'base.html' %} {% block content %}
 
 <div class="button">
-   <button>  <h1> <a href="{% url 'ticket_list' department='IT'  %} " > IT </a></h1>   </button> Number of tickets on queue: {{ it_tickets.count}}
-   <br>
-   <button>   <h1> <a href="{% url 'ticket_list' department='HR'  %} " > HR </a>  </h1></button>  Number of tickets on queue: {{ hr_tickets.count }}
-    <br>
-     <button>   <h1> <a href="{% url 'ticket_list' department='PM'  %} " > PM </a>  </h1> </button>  Number of tickets on queue: {{ pm_tickets.count }}
-    <br>
-     <button>   <h1> <a href="{% url 'ticket_list' department='FB'  %} " > F&B </a>  </h1> </button>  Number of tickets on queue: {{ fb_tickets.count }}
-<br>
-    </div>
+    <button>
+        <h1><a href="{% url 'ticket_list' department='IT'  %} "> IT </a></h1>
+    </button>
+    Number of tickets on queue: {{ it_tickets.count}}
+    <br />
+    <button>
+        <h1><a href="{% url 'ticket_list' department='HR'  %} "> HR </a></h1>
+    </button>
+    Number of tickets on queue: {{ hr_tickets.count }}
+    <br />
+    <button>
+        <h1><a href="{% url 'ticket_list' department='PM'  %} "> PM </a></h1>
+    </button>
+    Number of tickets on queue: {{ pm_tickets.count }}
+    <br />
+    <button>
+        <h1><a href="{% url 'ticket_list' department='FB'  %} "> F&B </a></h1>
+    </button>
+    Number of tickets on queue: {{ fb_tickets.count }}
+    <br />
+</div>
 
+<button>
+    <h2>
+        <a href="{% url 'ticket_list' department='ALL'  %} "
+            >SEE ALL {{ all_tickets.count }} TICKETS
+        </a>
+    </h2>
+</button>
 
-         <button>    <h2> <a href="{% url 'ticket_list' department='ALL'  %} " >SEE ALL {{ all_tickets.count }} TICKETS </a>  </h2> </button>
-
-
-<br>
-   <button>    <h1> <a href="{% url 'ticket_create'  %} " >RAISE A TICKET </a>  </h1></button>
-
-
- {% endblock content %}
+<br />
+<button>
+    <h1><a href="{% url 'ticket_create'  %} ">RAISE A TICKET </a></h1>
+</button>
+{% if messages %}
+<h2 style="color: green">
+    {% for message in messages %} {{ message }} {% endfor %}
+</h2>
+{% endif %} {% endblock content %}
